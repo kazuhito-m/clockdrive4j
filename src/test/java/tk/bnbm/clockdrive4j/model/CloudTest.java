@@ -1,4 +1,4 @@
-﻿package tk.bnbm.clockdrive4j.model;
+package tk.bnbm.clockdrive4j.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
