@@ -46,7 +46,7 @@ public class Car {
 	 * 車をの向き(描くべき角度を360度法)を取得する。<br>
 	 * 前後２点から滑らかに補完する。
 	 *
-	 * @return
+	 * @return 角度(360度法)
 	 */
 	public double getAngle() {
 
@@ -67,6 +67,6 @@ public class Car {
 		double xDiff = (pA.getX() - pB.getX());
 		double yDiff = (pA.getY() - pB.getY());
 		double angle = Math.atan2(yDiff, xDiff);
-		return angle / PI / 2.0 * 360.0 + 90.0;
+		return angle / PI / 2.0D * 360.0D + 90.0D;
 	}
 }
