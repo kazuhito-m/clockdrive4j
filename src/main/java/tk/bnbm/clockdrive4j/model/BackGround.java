@@ -79,8 +79,8 @@ public class BackGround {
 	 * @return パート番号。
 	 */
 	protected int calcPartOfDay(int totalPartCount, int offset) {
-		return (offset + this.time.get(HOUR_OF_DAY) / (24 / totalPartCount))
-				% totalPartCount;
+		int hour = this.time.get(HOUR_OF_DAY);
+		return (offset + hour / (24 / totalPartCount)) % totalPartCount;
 	}
 
 	/**
