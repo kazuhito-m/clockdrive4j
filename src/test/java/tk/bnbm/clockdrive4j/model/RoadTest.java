@@ -1,6 +1,7 @@
 package tk.bnbm.clockdrive4j.model;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.geom.Point2D;
@@ -11,11 +12,14 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
-import org.junit.experimental.theories.*;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
 /**
  * Roadクラスのテスト。
+ *
  * @author kazuhito_m
  */
 @RunWith(Enclosed.class)
@@ -28,7 +32,7 @@ public class RoadTest {
 
 		@Before
 		public void setUp() throws NumberFormatException, IOException {
-			sut = new Road("target/test-classes/RoadData.csv");
+			sut = new Road("target/classes/datas/roadData.csv");
 		}
 
 		@Test
@@ -51,8 +55,8 @@ public class RoadTest {
 			int hourB = ((Integer) values[3]).intValue();
 			int minuteB = ((Integer) values[4]).intValue();
 			int secondB = ((Integer) values[5]).intValue();
-
 			String expectTo = (String) values[6];
+
 			Calendar c = Calendar.getInstance();
 
 			c.set(2001, 1, 1, hourA, minuteA, secondA);

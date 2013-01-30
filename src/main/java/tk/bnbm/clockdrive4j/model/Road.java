@@ -1,6 +1,6 @@
 package tk.bnbm.clockdrive4j.model;
 
-import static java.util.Calendar.HOUR;
+import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.SECOND;
 
@@ -87,7 +87,7 @@ public class Road {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(time);
 
-		double ratio = ((double) cal.get(HOUR) % 12D / 12D)
+		double ratio = ((double) cal.get(HOUR_OF_DAY) % 12D / 12D)
 				+ ((double) cal.get(MINUTE) % 60D / 60D / 12D)
 				+ ((double) cal.get(SECOND) % 60D / 60D / 60D / 12D);
 		return ratio;
