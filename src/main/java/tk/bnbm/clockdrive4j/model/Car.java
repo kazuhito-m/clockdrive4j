@@ -1,4 +1,4 @@
-﻿package tk.bnbm.clockdrive4j.model;
+package tk.bnbm.clockdrive4j.model;
 
 import static java.lang.Math.PI;
 import static java.util.Calendar.SECOND;

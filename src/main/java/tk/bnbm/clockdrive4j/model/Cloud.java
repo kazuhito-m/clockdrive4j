@@ -1,4 +1,4 @@
-﻿package tk.bnbm.clockdrive4j.model;
+package tk.bnbm.clockdrive4j.model;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;

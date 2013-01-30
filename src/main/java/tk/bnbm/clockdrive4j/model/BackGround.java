@@ -1,4 +1,4 @@
-﻿package tk.bnbm.clockdrive4j.model;
+package tk.bnbm.clockdrive4j.model;
 
 import static java.util.Calendar.HOUR_OF_DAY;
 import static java.util.Calendar.MINUTE;
