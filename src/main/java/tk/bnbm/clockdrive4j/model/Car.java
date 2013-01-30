@@ -29,7 +29,7 @@ public class Car {
 	 *
 	 * @param t 基準時刻。
 	 */
-	public void SetTime(Date t) {
+	public void setTime(Date t) {
 		time = t;
 	}
 
