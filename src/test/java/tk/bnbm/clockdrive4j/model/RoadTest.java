@@ -32,7 +32,7 @@ public class RoadTest {
 
 		@Before
 		public void setUp() throws NumberFormatException, IOException {
-			sut = new Road("target/classes/datas/roadData.csv");
+			sut = new Road("target/test-classes/datas/roadData.csv");
 		}
 
 		@Test
