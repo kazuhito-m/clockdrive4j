@@ -26,18 +26,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<addClasspath>true</addClasspath>
-							<classpathPrefix>dependency</classpathPrefix>
-							<mainClass>MurataReleasePreCheckMojo</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
 					<execution>
