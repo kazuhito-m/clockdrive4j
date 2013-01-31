@@ -56,19 +56,19 @@ public class Cloud {
 	 */
 	public void move(double elapsed) {
 		for (Point2D.Double p : positions) {
-
+			// 引数指定分、雲を移動(左下方向へ)
 			double newX = p.getX() - elapsed;
 			double newY = p.getY() - elapsed;
 
-			double x = backgroundSize.getX();
-			double y = backgroundSize.getY();
+			double bgSizeX = backgroundSize.getX();
+			double bgSizeY = backgroundSize.getY();
 
-			if (newX < -x * 0.5) {
-				newX += x * 2;
+			if (newX < -bgSizeX * 0.5) {
+				newX += bgSizeX * 2;
 			}
-			if (newY < -y * 0.5) {
-				newY += y * 2;
-				newX = getRundum(x);
+			if (newY < -bgSizeY * 0.5) {
+				newY += bgSizeY * 2;
+				newX = getRundum(bgSizeX);
 			}
 			// 新しい座標に移動(インスタンスはそのまま)
 			p.setLocation(newX, newY);
