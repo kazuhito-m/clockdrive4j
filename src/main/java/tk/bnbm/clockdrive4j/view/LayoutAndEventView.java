@@ -1,5 +1,8 @@
 package tk.bnbm.clockdrive4j.view;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -29,6 +32,8 @@ public abstract class LayoutAndEventView extends Application {
 	protected Label dispTime;
 
 	protected AnimationTimer timer;
+
+	protected List<ImageView> cloudImages;
 
 	/**
 	 * 描画物体の初期化を行うイベント。<br>
@@ -60,6 +65,8 @@ public abstract class LayoutAndEventView extends Application {
 		root.getChildren().add((fgImage = new ImageView()));
 		root.getChildren().add((carImage = new ImageView()));
 		root.getChildren().add((dispTime = new Label()));
+		// 雲だけはこの場でオブジェクトを作らない。
+		cloudImages = new ArrayList<ImageView>();
 
 		stage.setScene(scene);
 		stage.setTitle("CleckDrive");
@@ -76,14 +83,14 @@ public abstract class LayoutAndEventView extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// 自身描画物の初期化
-		this.initView(stage);
+		initView(stage);
 		// 表示
 		stage.show();
 		// 描画ループ
 		timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				System.out.println("now : " + now);
+//				System.out.println("now : " + now);
 				repaint();
 			}
 		};

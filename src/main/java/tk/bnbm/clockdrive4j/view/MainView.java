@@ -6,8 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import tk.bnbm.clockdrive4j.model.BackGround;
 import tk.bnbm.clockdrive4j.model.Car;
 import tk.bnbm.clockdrive4j.model.Cloud;
@@ -40,6 +42,17 @@ public class MainView extends LayoutAndEventView {
 		// 固定な描画オブジェクトは設定しておく。
 		// TODO イメージをリソースから読み込む。
 		carImage.setImage(new Image("file:./target/classes/images/car.png"));
+
+		// 雲を足す。
+		Image cloudImage = new Image("file:./target/classes/images/cloud.png");
+		Group root = (Group) scene.getRoot(); // コンテナを取り出し。
+		for (Point2D.Double p : cloud.getPositions()) {
+			ImageView cloudView = new ImageView(cloudImage); // イメージビューを作り、
+			cloudView.relocate(p.getX(), p.getY());		// 座標を移植し
+			root.getChildren().add(cloudView); // コンテナに追加し、
+			cloudImages.add(cloudView); // 同時にListに入れておく。
+		}
+
 		// 初回の描画
 		draw(new Date());
 
@@ -66,7 +79,7 @@ public class MainView extends LayoutAndEventView {
 		drawBackGround(current);
 		drawCar(current);
 		drawDigitalTime(current);
-		// drawClouds();
+		drawClouds();
 	}
 
 	/**
@@ -112,6 +125,17 @@ public class MainView extends LayoutAndEventView {
 	 */
 	private void drawDigitalTime(Date time) {
 		dispTime.setText(FMT_TIME.format(time));
+	}
+
+	/**
+	 * 雲の影を描く。
+	 */
+	private void drawClouds() {
+		// 座標を移植し移動。
+		int i = 0;	// Point2Dのhashが変わるばっかりに、原始的な…。
+		for (Point2D.Double p : cloud.getPositions()) {
+			cloudImages.get(i++).relocate(p.getX(), p.getY());
+		}
 	}
 
 	/**
