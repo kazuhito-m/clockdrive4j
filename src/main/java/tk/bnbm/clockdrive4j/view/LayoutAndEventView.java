@@ -14,21 +14,30 @@ import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 /**
  * 本アプリケーション、メインビューの基底抽象クラス。<br>
- *
+ * 
  * 描画物のレイアウトと各種イベントのキックを責務とする。<br>
  * Modelオブジェクトとの紐づけ・描画反映はおこなわず、継承先クラスが行うものとする。
- *
+ * 
  * @author kazuhito_m
  */
 public abstract class LayoutAndEventView extends Application {
+
+	// 描画制御系定数
+	
+	/** 描画間隔(ナノ秒) */
+	private static final long INTERVAL_NANO_SEC = 100000000L; // 描画間隔(ナノ秒)
 
 	// 描画オブジェクト群
 
@@ -53,12 +62,12 @@ public abstract class LayoutAndEventView extends Application {
 	/** タイマー起動中フラグ。 */
 	protected boolean isTimerOn;
 
-	/** 画面を描画するときに使用したステージオブジェクト。*/
+	/** 画面を描画するときに使用したステージオブジェクト。 */
 	protected Scene scene;
 
 	/**
 	 * 描画物体の初期化を行うイベント。<br>
-	 *
+	 * 
 	 * 描画物体とそのレイアウトを行うのはこの本クラスの責務だが、<br>
 	 * その初期化(ImageViewなら元画像のセット）などは、一度きりのここで行う。
 	 */
@@ -66,7 +75,7 @@ public abstract class LayoutAndEventView extends Application {
 
 	/**
 	 * 描画(再描画)を行うイベント。<br>
-	 *
+	 * 
 	 * 描画タイミング(描画間隔)を決めるのは、本クラスであり、 <br>
 	 * F継承先クラスでは「描画する方法」のみに注力して実装することを期待している。
 	 */
@@ -80,10 +89,14 @@ public abstract class LayoutAndEventView extends Application {
 
 	/**
 	 * 自身Viewの表示物に対し初期化を行う。
-	 *
+	 * 
 	 * @throws Exception
 	 */
 	protected void initView(Stage stage) throws Exception {
+
+		// 自身Windowの性質を決定
+		stage.initStyle(StageStyle.TRANSPARENT); // 透明ダイアログ(描画は内容物に任す)
+
 		// 下地(シーンとグループ)作成。
 		final Group root = new Group();
 		scene = new Scene(root, 512, 512);
@@ -92,6 +105,19 @@ public abstract class LayoutAndEventView extends Application {
 		root.getChildren().add(fgImage = new ImageView());
 		root.getChildren().add(carImage = new ImageView());
 		root.getChildren().add(dispTime = new Label());
+
+		// 時刻デジタル表示域の初期化
+		dispTime.setFont(new Font("Verdana", 50L));
+		dispTime.setTextFill(Color.LIGHTBLUE);
+
+		DropShadow ds = new DropShadow();
+		ds.setOffsetX(3);
+		ds.setOffsetY(3);
+		ds.setColor(Color.BLUE);
+		dispTime.setEffect(ds);
+		dispTime.relocate(10, scene.getHeight()
+				- (dispTime.getFont().getSize() + 10));
+
 		// 雲だけはこの場でオブジェクトを作らない。
 		cloudImages = new ArrayList<ImageView>();
 
@@ -115,9 +141,11 @@ public abstract class LayoutAndEventView extends Application {
 
 	/**
 	 * コンテキストメニュー(右クリックメニュー)の追加。
-	 *
-	 * @param root コントロールのコンテナ。
-	 * @param scene シーン。
+	 * 
+	 * @param root
+	 *            コントロールのコンテナ。
+	 * @param scene
+	 *            シーン。
 	 */
 	protected void initMenu(final Group root, final Scene scene) {
 		// メニュー追加。
@@ -196,9 +224,16 @@ public abstract class LayoutAndEventView extends Application {
 		stage.show();
 		// 描画ループ
 		timer = new AnimationTimer() {
+			private long timing; // 前回同期をとったタイミング。
 			@Override
 			public void handle(long now) {
-				// System.out.println("now : " + now);
+				// 変化なしフレームは破棄。
+				long nowTiming = now / INTERVAL_NANO_SEC;
+				if (timing == nowTiming) {
+					return;
+				}
+				timing = nowTiming;
+
 				repaint();
 			}
 		};

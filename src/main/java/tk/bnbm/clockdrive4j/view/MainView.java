@@ -51,7 +51,7 @@ public class MainView extends LayoutAndEventView {
 	public void initDisplayObjects(Scene scene) throws Exception {
 		// Modelオブジェクト群初期化。
 		bg = new BackGround("./target/classes/images/");
-		road = new Road("./target/classes/datas/RoadData.csv");
+		road = new Road("./target/classes/datas/roadData.csv");
 		car = new Car(road);
 		cloud = new Cloud(scene.getWidth(), scene.getHeight(), 15);
 		// 固定な描画オブジェクトは設定しておく。
@@ -67,6 +67,9 @@ public class MainView extends LayoutAndEventView {
 			root.getChildren().add(cloudView); // コンテナに追加し、
 			cloudImages.add(cloudView); // 同時にListに入れておく。
 		}
+		// 雲に埋もれてしまうので、ラベルを一番前へと出し直す。
+		root.getChildren().remove(dispTime);
+		root.getChildren().add(dispTime);
 		// 初回の描画
 		draw(new Date());
 	}
@@ -122,8 +125,8 @@ public class MainView extends LayoutAndEventView {
 		car.setTime(time);
 		// 自身のイメージの大きさを考慮し「中心にくる」考慮を入れた座標計算。
 		Point2D.Double p = car.getPosition();
-		double x = p.getX() - (carImage.getLayoutBounds().getWidth() / 3);
-		double y = p.getY() - (carImage.getLayoutBounds().getHeight() / 3);
+		double x = p.getX() - (carImage.getLayoutBounds().getWidth() / 2);
+		double y = p.getY() - (carImage.getLayoutBounds().getHeight() / 2);
 		// 描画更新
 		carImage.relocate(x, y);
 		carImage.setRotate(car.getAngle());
