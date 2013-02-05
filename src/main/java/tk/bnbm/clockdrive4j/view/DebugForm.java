@@ -34,7 +34,7 @@ public class DebugForm extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// デバッグダイアログ用意。
-		stage.setTitle("Debug Form");
+		stage.setTitle("DebugForm");
 		Parent root = FXMLLoader.load(getClass().getResource("debugForm.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
