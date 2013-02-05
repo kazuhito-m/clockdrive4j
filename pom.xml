@@ -16,8 +16,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<encoding>UTF-8</encoding>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<verbose>true</verbose>
 				</configuration>
 			</plugin>
@@ -91,6 +91,13 @@
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>javafx</artifactId>
+			<version>2.1</version>
+			<systemPath>${basedir}/lib/jfxrt.jar</systemPath>
+			<scope>system</scope>
 		</dependency>
 	</dependencies>
 </project>
