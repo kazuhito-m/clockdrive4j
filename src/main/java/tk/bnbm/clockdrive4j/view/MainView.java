@@ -71,7 +71,6 @@ public class MainView extends LayoutAndEventView {
 	 */
 	@Override
 	public void repaint() {
-		cloud.move(1);
 		draw(new Date());
 	}
 
@@ -80,14 +79,14 @@ public class MainView extends LayoutAndEventView {
 	 *
 	 * @param date 表示を行う時刻。
 	 */
-	private void draw(Date time) {
+	protected void draw(Date time) {
 		// 現在時刻を記憶。
 		current = time;
 		// Modelの現在内容を描画更新。
 		drawBackGround(current);
 		drawCar(current);
 		drawDigitalTime(current);
-		drawClouds();
+		drawClouds(1);
 	}
 
 	/**
@@ -137,7 +136,9 @@ public class MainView extends LayoutAndEventView {
 	/**
 	 * 雲の影を描く。
 	 */
-	private void drawClouds() {
+	private void drawClouds(double distance) {
+		// 指定された距離で雲を移動。
+		cloud.move(distance);
 		// 座標を移植し移動。
 		int i = 0; // Point2Dのhashが変わるばっかりに、原始的な…。
 		for (Point2D.Double p : cloud.getPositions()) {
