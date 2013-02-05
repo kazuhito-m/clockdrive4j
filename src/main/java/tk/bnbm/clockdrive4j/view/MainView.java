@@ -24,14 +24,24 @@ public class MainView extends LayoutAndEventView {
 
 	// Modelオブジェクト群。
 
+	/** 背景モデルオブジェクト。 */
 	protected BackGround bg;
+
+	/** 道モデルオブジェクト。 */
 	protected Road road;
+
+	/** 車モデルオブジェクト。 */
 	protected Car car;
+
+	/** 雲モデルオブジェクト。 */
 	protected Cloud cloud;
 
 	// 広域変数(プロパティ)
 	private Date current;
 
+	/**
+	 * 描画物体の初期化を行うイベント。<br>
+	 */
 	@Override
 	public void initDisplayObjects(Scene scene) throws Exception {
 		// Modelオブジェクト群初期化。
@@ -48,14 +58,12 @@ public class MainView extends LayoutAndEventView {
 		Group root = (Group) scene.getRoot(); // コンテナを取り出し。
 		for (Point2D.Double p : cloud.getPositions()) {
 			ImageView cloudView = new ImageView(cloudImage); // イメージビューを作り、
-			cloudView.relocate(p.getX(), p.getY());		// 座標を移植し
+			cloudView.relocate(p.getX(), p.getY()); // 座標を移植し
 			root.getChildren().add(cloudView); // コンテナに追加し、
 			cloudImages.add(cloudView); // 同時にListに入れておく。
 		}
-
 		// 初回の描画
 		draw(new Date());
-
 	}
 
 	/**
@@ -113,8 +121,7 @@ public class MainView extends LayoutAndEventView {
 		double x = p.getX() - (carImage.getLayoutBounds().getWidth() / 3);
 		double y = p.getY() - (carImage.getLayoutBounds().getHeight() / 3);
 		// 描画更新
-		carImage.setX(x);
-		carImage.setY(y);
+		carImage.relocate(x, y);
 		carImage.setRotate(car.getAngle());
 	}
 
@@ -132,7 +139,7 @@ public class MainView extends LayoutAndEventView {
 	 */
 	private void drawClouds() {
 		// 座標を移植し移動。
-		int i = 0;	// Point2Dのhashが変わるばっかりに、原始的な…。
+		int i = 0; // Point2Dのhashが変わるばっかりに、原始的な…。
 		for (Point2D.Double p : cloud.getPositions()) {
 			cloudImages.get(i++).relocate(p.getX(), p.getY());
 		}

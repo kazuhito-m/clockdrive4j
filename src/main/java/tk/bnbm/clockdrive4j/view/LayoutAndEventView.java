@@ -23,16 +23,22 @@ public abstract class LayoutAndEventView extends Application {
 
 	// 描画オブジェクト群
 
+	/** 背景(最背面)イメージ。 */
 	protected ImageView bgImage;
 
+	/** 背景(前)イメージ。 */
 	protected ImageView fgImage;
 
+	/** "車"イメージ。 */
 	protected ImageView carImage;
 
+	/** 左下デジタル時刻表示ラベル。 */
 	protected Label dispTime;
 
+	/** タイマーオブジェクト。 */
 	protected AnimationTimer timer;
 
+	/** "雲"イメージ群(List)。 */
 	protected List<ImageView> cloudImages;
 
 	/**
@@ -61,10 +67,10 @@ public abstract class LayoutAndEventView extends Application {
 		Group root = new Group();
 		Scene scene = new Scene(root, 512, 512);
 		// 描画物を作成とともにグループへ突っ込む。
-		root.getChildren().add((bgImage = new ImageView()));
-		root.getChildren().add((fgImage = new ImageView()));
-		root.getChildren().add((carImage = new ImageView()));
-		root.getChildren().add((dispTime = new Label()));
+		root.getChildren().add(bgImage = new ImageView());
+		root.getChildren().add(fgImage = new ImageView());
+		root.getChildren().add(carImage = new ImageView());
+		root.getChildren().add(dispTime = new Label());
 		// 雲だけはこの場でオブジェクトを作らない。
 		cloudImages = new ArrayList<ImageView>();
 
@@ -90,7 +96,7 @@ public abstract class LayoutAndEventView extends Application {
 		timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-//				System.out.println("now : " + now);
+				// System.out.println("now : " + now);
 				repaint();
 			}
 		};
