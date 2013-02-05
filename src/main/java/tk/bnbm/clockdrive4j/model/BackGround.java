@@ -15,7 +15,7 @@ public class BackGround {
 	private Calendar time;
 
 	/** すべての背景画像のファイルパス一覧 */
-	protected String[] imageFileNames;
+	protected File[] imageFileNames;
 
 	/**
 	 * コンストラクタ。<br>
@@ -33,7 +33,7 @@ public class BackGround {
 	 */
 	public BackGround(String imagePath) {
 		this();
-		imageFileNames = new File(imagePath).list(new FilenameFilter() {
+		imageFileNames = new File(imagePath).listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return name.matches("bg.*\\.png");
 			}
@@ -55,7 +55,7 @@ public class BackGround {
 	 * @return ファイルパス。
 	 */
 	public String getSrcImagePath() {
-		return imageFileNames[calcPartOfDay(imageFileNames.length, 0)];
+		return imageFileNames[calcPartOfDay(imageFileNames.length, 0)].getPath();
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class BackGround {
 	 * @return ファイルパス。
 	 */
 	public String getDestImagePath() {
-		return imageFileNames[calcPartOfDay(imageFileNames.length, +1)];
+		return imageFileNames[calcPartOfDay(imageFileNames.length, +1)].getPath();
 	}
 
 	/**

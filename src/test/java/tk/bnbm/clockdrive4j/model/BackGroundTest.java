@@ -46,9 +46,9 @@ public class BackGroundTest {
 		@Test
 		public void プロパティが読み込み可能なファイルパスを返す() {
 			String path = sut.getSrcImagePath();
-			assertThat(new File(IMAGES_PATH, path).exists(), is(true));
+			assertThat(new File( path).exists(), is(true));
 			path = sut.getDestImagePath();
-			assertThat(new File(IMAGES_PATH, path).exists(), is(true));
+			assertThat(new File(path).exists(), is(true));
 		}
 
 	}
@@ -78,8 +78,9 @@ public class BackGroundTest {
 
 		@Theory
 		public void 時刻指定に応じた_適切な画像ファイルパスのペアとブレンド率を返す(Object[] values) {
-			sut.imageFileNames = new String[] { "bg01.png", "bg02.png",
-					"bg03.png", "bg04.png" };
+			sut.imageFileNames = new File[] { new File("bg01.png"),
+					new File("bg02.png"), new File("bg03.png"),
+					new File("bg04.png") };
 
 			int hour = ((Integer) values[0]).intValue();
 			int minute = ((Integer) values[1]).intValue();
@@ -123,8 +124,10 @@ public class BackGroundTest {
 
 		@Theory
 		public void 時刻指定に応じた_適切な画像ファイルパスのペアとブレンド率を返す(Object[] values) {
-			sut.imageFileNames = new String[] { "bg01.png", "bg02.png",
-					"bg03.png", "bg04.png", "bg05.png", "bg06.png" };
+			sut.imageFileNames = new File[] { new File("bg01.png"),
+					new File("bg02.png"), new File("bg03.png"),
+					new File("bg04.png"), new File("bg05.png"),
+					new File("bg06.png") };
 
 			int hour = ((Integer) values[0]).intValue();
 			int minute = ((Integer) values[1]).intValue();

@@ -27,7 +27,7 @@ public class Cloud {
 	 * @param height 背景の縦長。
 	 * @param count 雲の数。
 	 */
-	public Cloud(int width, int height, int count) {
+	public Cloud(double width, double height, int count) {
 		// 資源の初期化。
 		backgroundSize = new Point2D.Double(width, height);
 		positions = new ArrayList<Point2D.Double>();
