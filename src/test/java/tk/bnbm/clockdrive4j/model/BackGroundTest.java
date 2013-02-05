@@ -2,7 +2,8 @@ package tk.bnbm.clockdrive4j.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.Calendar;
@@ -46,11 +47,21 @@ public class BackGroundTest {
 		@Test
 		public void プロパティが読み込み可能なファイルパスを返す() {
 			String path = sut.getSrcImagePath();
-			assertThat(new File( path).exists(), is(true));
+			assertThat(new File(path).exists(), is(true));
 			path = sut.getDestImagePath();
 			assertThat(new File(path).exists(), is(true));
 		}
 
+		@Test
+		public void ファイル配列は名前アスキー昇順で格納される() {
+			String prevName = null;
+			for (File f : sut.imageFileNames) {
+				if (prevName != null) {
+					assertTrue(prevName.compareTo(f.getName()) < 0);
+				}
+				prevName = f.getName();
+			}
+		}
 	}
 
 	@RunWith(Theories.class)
