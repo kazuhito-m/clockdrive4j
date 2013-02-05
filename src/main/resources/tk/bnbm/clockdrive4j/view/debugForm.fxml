@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<AnchorPane id="AnchorPane" fx:id="Main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="314.0" xmlns:fx="http://javafx.com/fxml">
+  <children>
+    <Label layoutX="14.0" layoutY="14.0" prefHeight="20.0" prefWidth="84.0" text="対象日付時刻：" />
+    <TextField layoutX="98.0" layoutY="16.0" prefWidth="200.0" />
+    <Button layoutX="14.0" layoutY="51.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="284.0" text="Button" />
+    <Button layoutX="14.0" layoutY="108.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="284.0" text="Button" />
+    <Button layoutX="14.0" layoutY="165.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="284.0" text="Button" />
+  </children>
+</AnchorPane>
