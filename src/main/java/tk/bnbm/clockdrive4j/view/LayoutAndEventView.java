@@ -5,11 +5,20 @@ import java.util.List;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * 本アプリケーション、メインビューの基底抽象クラス。<br>
@@ -35,11 +44,17 @@ public abstract class LayoutAndEventView extends Application {
 	/** 左下デジタル時刻表示ラベル。 */
 	protected Label dispTime;
 
+	/** "雲"イメージ群(List)。 */
+	protected List<ImageView> cloudImages;
+
 	/** タイマーオブジェクト。 */
 	protected AnimationTimer timer;
 
-	/** "雲"イメージ群(List)。 */
-	protected List<ImageView> cloudImages;
+	/** タイマー起動中フラグ。 */
+	protected boolean isTimerOn;
+
+	/** 画面を描画するときに使用したステージオブジェクト。*/
+	protected Scene scene;
 
 	/**
 	 * 描画物体の初期化を行うイベント。<br>
@@ -58,14 +73,20 @@ public abstract class LayoutAndEventView extends Application {
 	public abstract void repaint();
 
 	/**
+	 * デバッグ開始のイベント。<br>
+	 * デバッグの内容は実装クラスが定義する。
+	 */
+	public abstract void startDebug();
+
+	/**
 	 * 自身Viewの表示物に対し初期化を行う。
 	 *
 	 * @throws Exception
 	 */
 	protected void initView(Stage stage) throws Exception {
 		// 下地(シーンとグループ)作成。
-		Group root = new Group();
-		Scene scene = new Scene(root, 512, 512);
+		final Group root = new Group();
+		scene = new Scene(root, 512, 512);
 		// 描画物を作成とともにグループへ突っ込む。
 		root.getChildren().add(bgImage = new ImageView());
 		root.getChildren().add(fgImage = new ImageView());
@@ -74,13 +95,94 @@ public abstract class LayoutAndEventView extends Application {
 		// 雲だけはこの場でオブジェクトを作らない。
 		cloudImages = new ArrayList<ImageView>();
 
+		// コンテキストメニュー(右クリックメニュー)の追加。
+		initMenu(root, scene);
+
 		stage.setScene(scene);
 		stage.setTitle("CleckDrive");
+
+		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			public void handle(WindowEvent e) {
+				onClose();
+			}
+		});
 
 		// TODO 描画域の角を丸める。
 
 		// 継承先での描画物の初期化。
 		initDisplayObjects(scene);
+	}
+
+	/**
+	 * コンテキストメニュー(右クリックメニュー)の追加。
+	 *
+	 * @param root コントロールのコンテナ。
+	 * @param scene シーン。
+	 */
+	protected void initMenu(final Group root, final Scene scene) {
+		// メニュー追加。
+		final ContextMenu popup = new ContextMenu();
+		MenuItem mi = new MenuItem("終了する(_X)");
+		mi.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				Platform.exit();
+			}
+		});
+		popup.getItems().add(mi);
+
+		mi = new MenuItem("タイマー停止と再開(_T)");
+		mi.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				switchTimer();
+			}
+		});
+		popup.getItems().add(mi);
+
+		mi = new MenuItem("開発用(_D)");
+		mi.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent e) {
+				startDebug();
+			}
+		});
+		popup.getItems().add(mi);
+
+		scene.setOnMouseClicked(new EventHandler<Event>() {
+			public void handle(Event event) {
+				// 右クリック時にポップアップメニューを表示
+				MouseEvent me = (MouseEvent) event;
+				if (me.getButton() == MouseButton.SECONDARY) {
+					popup.show(root, me.getScreenX(), me.getScreenY());
+				}
+			}
+		});
+	}
+
+	/**
+	 * タイマー制御。<br>
+	 * 指定されたスイッチ状態に変更する。
+	 */
+	protected void switchTimer(boolean newState) {
+		if (newState) {
+			timer.start();
+		} else {
+			timer.stop();
+		}
+		this.isTimerOn = newState;
+	}
+
+	/**
+	 * タイマー制御。<br>
+	 * 状態未指定版のオーバーロードメソッド。指定無しの場合「現在の状態を逆転」させる。
+	 */
+	protected void switchTimer() {
+		switchTimer(!this.isTimerOn);
+	}
+
+	/**
+	 * 閉じられる際に起こるイベント。
+	 */
+	protected void onClose() {
+		// 空実装。
 	}
 
 	/**
@@ -100,6 +202,7 @@ public abstract class LayoutAndEventView extends Application {
 				repaint();
 			}
 		};
+		isTimerOn = true;
 		timer.start();
 	}
 

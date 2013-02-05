@@ -10,6 +10,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 import tk.bnbm.clockdrive4j.model.BackGround;
 import tk.bnbm.clockdrive4j.model.Car;
 import tk.bnbm.clockdrive4j.model.Cloud;
@@ -38,6 +41,8 @@ public class MainView extends LayoutAndEventView {
 
 	// 広域変数(プロパティ)
 	private Date current;
+
+	DebugForm debugForm;
 
 	/**
 	 * 描画物体の初期化を行うイベント。<br>
@@ -143,6 +148,56 @@ public class MainView extends LayoutAndEventView {
 		int i = 0; // Point2Dのhashが変わるばっかりに、原始的な…。
 		for (Point2D.Double p : cloud.getPositions()) {
 			cloudImages.get(i++).relocate(p.getX(), p.getY());
+		}
+	}
+
+	/**
+	 * デバッグ開始。
+	 */
+	@Override
+	public void startDebug() {
+		try {
+			// デバッグビルド専用、右クリックにより、時刻を強制指定できる別画面を表示する。（タイマーを停止する）
+			this.switchTimer(false);
+			// 表示。(あればそれを、無ければ新規作成)
+			Stage s;
+			if (debugForm == null) {
+				s = new Stage();
+				DebugForm df = new DebugForm(this);
+				df.start(s);
+				debugForm = df; // 自身プロパティに保存
+			} else {
+				s = debugForm.self;
+			}
+			// 初期位置計算。(自画面の右横上に隣接する形で)
+			Window self = scene.getWindow();
+			s.setX(self.getX() + self.getWidth());
+			s.setY(self.getY());
+			// 画面からはみ出しちゃったら、反対側に表示する
+			double allWidth = Screen.getPrimary().getBounds().getWidth();
+			if ((s.getX() + s.getWidth()) > allWidth) {
+				s.setX(self.getX() - s.getWidth());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * デバッグ終了。
+	 */
+	public void endDebug() {
+		if (debugForm != null) {
+			debugForm = null;
+		}
+	}
+
+	/**
+	 * 閉じられる際に呼ばれるイベント。
+	 */
+	protected void onClose() {
+		if (debugForm != null) {
+			debugForm.self.close();
 		}
 	}
 
