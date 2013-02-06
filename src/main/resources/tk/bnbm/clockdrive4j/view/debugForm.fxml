@@ -9,7 +9,9 @@
 <AnchorPane id="AnchorPane" fx:id="Main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="228.0" prefWidth="314.0" xmlns:fx="http://javafx.com/fxml" fx:controller="tk.bnbm.clockdrive4j.view.DebugForm">
   <children>
     <Label layoutX="14.0" layoutY="14.0" prefHeight="20.0" prefWidth="106.0" text="対象日付時刻：" />
-    <TextField fx:id="targetDate" layoutX="120.0" layoutY="16.0" prefWidth="178.0" />
+    <TextField fx:id="targetDate" layoutX="120.0" layoutY="14.0"
+    	onKeyTyped="#doTextChanged"
+    	prefWidth="178.0" />
     <Button id="" fx:id="oneDayTravel" layoutX="14.0" layoutY="51.0" mnemonicParsing="false" onAction="#doOneDayTraval" prefHeight="42.0" prefWidth="284.0" text="24時間ぐるっと旅をする！！" />
     <Button fx:id="oneHourDrive" layoutX="14.0" layoutY="108.0" mnemonicParsing="false" onAction="#doOneHourDrive" prefHeight="42.0" prefWidth="284.0" text="1時間ドライブする！！" />
     <Button id="recordLoad" fx:id="recordRoad" layoutX="16.0" layoutY="165.0" mnemonicParsing="false" onAction="#doRecordRoad" prefHeight="42.0" prefWidth="284.0" text="&quot;道&quot;の軌跡を記録する。" />

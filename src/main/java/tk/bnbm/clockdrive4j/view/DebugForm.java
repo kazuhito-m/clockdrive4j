@@ -1,8 +1,15 @@
 package tk.bnbm.clockdrive4j.view;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,6 +25,12 @@ import javafx.stage.StageStyle;
  * @author kazuhito_m
  */
 public class DebugForm {
+
+	// 定数。
+
+	/** 時刻表示域の時刻書式 */
+	private static final DateFormat FMT_DT = new SimpleDateFormat(
+			"yyyy/MM/dd hh:mm:ss");
 
 	// 自身コントロール群
 
@@ -37,30 +50,89 @@ public class DebugForm {
 	 * デバッグ対象の「アプリケーションメイン画面」<br>
 	 * ※プログラムからこのクラスのインスタンスにアクセスできないため、static変数を使用して繋ぐ。
 	 */
-	protected static MainView debugTarget;
+	protected static MainView sut;
 
+	/**
+	 * 時刻値が変更されたら、親フォームの描画内容へ反映させる
+	 *
+	 * @param e
+	 */
+	@FXML
+	protected void doTextChanged(Event e) {
+		Date validTime;
+		try {
+			validTime = FMT_DT.parse(targetDate.getText());
+		} catch (ParseException pe) {
+			validTime = new Date();
+		}
+		sut.draw(validTime);
+	}
+
+	/**
+	 * 「24時間ぐるっと旅をする！！」クリックイベント。
+	 *
+	 * @param a イベントオブジェクト。
+	 */
 	@FXML
 	protected void doOneDayTraval(ActionEvent a) {
-		System.out.println("doOneDayTraval実行されたよ！");
+		simulate(24);
 	}
 
+	/**
+	 * 「1時間ドライブする！！」クリックイベント。
+	 *
+	 * @param a イベントオブジェクト。
+	 */
 	@FXML
 	protected void doOneHourDrive(ActionEvent a) {
-		System.out.println("doOneHourDrive実行されたよ！");
+		simulate(1);
 	}
 
+	/**
+	 * 「"道"の軌跡を記録する。」クリックイベント。
+	 *
+	 * @param a イベントオブジェクト。
+	 */
 	@FXML
 	protected void doRecordRoad(ActionEvent a) {
 		System.out.println("doRecordRoad実行されたよ！");
 	}
 
+	/**
+	 * 早回しでシミュレート開始する（２４時間 or １時間）
+	 *
+	 * @param hour 指定の時間。
+	 */
+	protected void simulate(final int totalHours) {
+		final int intervalSeconds = (totalHours == 24 ? 90 : 15);
+		// 計算用カレンダー用意。(故意に設定しなければ現在時刻)
+		final Calendar cal = Calendar.getInstance();
+		if (totalHours == 24) {
+			cal.set(2000, 1, 1, 0, 0, 0); // 24時間回しなら、深夜0:00から。
+		}
+		// アニメーション開始。
+		new AnimationTimer() {
+			private int i = 0;
+
+			@Override
+			public void handle(long l) {
+				sut.draw(cal.getTime());
+				cal.add(Calendar.SECOND, intervalSeconds);
+				i += intervalSeconds;
+				if (i > (totalHours * 60 * 60)) {
+					this.stop();
+				}
+			}
+		}.start();
+	}
+
 	// Setter/Getter
 
 	/**
-	 * @param debugTarget セットする debugTarget
+	 * @param sut セットする sut
 	 */
 	public static void setDebugTarget(MainView target) {
-		debugTarget = target;
+		sut = target;
 	}
 
 	/**
@@ -77,6 +149,12 @@ public class DebugForm {
 		Scene scene = new Scene(root);
 		s.setScene(scene);
 		s.setResizable(false);
+		// 日付部分を初期化
+		for (Object n : root.getChildrenUnmodifiable()) {
+			if (n instanceof TextField) {
+				TextField tf = (TextField) n;
+				tf.setText(FMT_DT.format(new Date()));
+			}
+		}
 	}
-
 }
