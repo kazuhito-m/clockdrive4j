@@ -34,215 +34,214 @@ import javafx.stage.WindowEvent;
  */
 public abstract class LayoutAndEventView extends Application {
 
-	// 描画制御系定数
-	
-	/** 描画間隔(ナノ秒) */
-	private static final long INTERVAL_NANO_SEC = 200000000L; // 描画間隔(ナノ秒)
+    // 描画制御系定数
 
-	// 描画オブジェクト群
+    /** 描画間隔(ナノ秒) */
+    private static final long INTERVAL_NANO_SEC = 200000000L; // 描画間隔(ナノ秒)
 
-	/** 背景(最背面)イメージ。 */
-	protected ImageView bgImage;
+    // 描画オブジェクト群
 
-	/** 背景(前)イメージ。 */
-	protected ImageView fgImage;
+    /** 背景(最背面)イメージ。 */
+    protected ImageView bgImage;
 
-	/** "車"イメージ。 */
-	protected ImageView carImage;
+    /** 背景(前)イメージ。 */
+    protected ImageView fgImage;
 
-	/** 左下デジタル時刻表示ラベル。 */
-	protected Label dispTime;
+    /** "車"イメージ。 */
+    protected ImageView carImage;
 
-	/** "雲"イメージ群(List)。 */
-	protected List<ImageView> cloudImages;
+    /** 左下デジタル時刻表示ラベル。 */
+    protected Label dispTime;
 
-	/** タイマーの停止と起動メニュー */
-	protected MenuItem timerSwitchMenu;
-	
-	/** タイマーオブジェクト。 */
-	protected AnimationTimer timer;
+    /** "雲"イメージ群(List)。 */
+    protected List<ImageView> cloudImages;
 
-	/** タイマー起動中フラグ。 */
-	protected boolean isTimerOn;
+    /** タイマーの停止と起動メニュー */
+    protected MenuItem timerSwitchMenu;
 
-	/** 画面を描画するときに使用したステージオブジェクト。 */
-	protected Scene scene;
+    /** タイマーオブジェクト。 */
+    protected AnimationTimer timer;
 
-	/**
-	 * 描画物体の初期化を行うイベント。<br>
-	 * 
-	 * 描画物体とそのレイアウトを行うのはこの本クラスの責務だが、<br>
-	 * その初期化(ImageViewなら元画像のセット）などは、一度きりのここで行う。
-	 */
-	public abstract void initDisplayObjects(Scene scene) throws Exception;
+    /** タイマー起動中フラグ。 */
+    protected boolean isTimerOn;
 
-	/**
-	 * 描画(再描画)を行うイベント。<br>
-	 * 
-	 * 描画タイミング(描画間隔)を決めるのは、本クラスであり、 <br>
-	 * F継承先クラスでは「描画する方法」のみに注力して実装することを期待している。
-	 */
-	public abstract void repaint();
+    /** 画面を描画するときに使用したステージオブジェクト。 */
+    protected Scene scene;
 
-	/**
-	 * デバッグ開始のイベント。<br>
-	 * デバッグの内容は実装クラスが定義する。
-	 */
-	public abstract void startDebug();
+    /**
+     * 描画物体の初期化を行うイベント。<br>
+     * 
+     * 描画物体とそのレイアウトを行うのはこの本クラスの責務だが、<br>
+     * その初期化(ImageViewなら元画像のセット）などは、一度きりのここで行う。
+     */
+    public abstract void initDisplayObjects(Scene scene) throws Exception;
 
-	/**
-	 * 自身Viewの表示物に対し初期化を行う。
-	 * 
-	 * @throws Exception
-	 */
-	protected void initView(Stage stage) throws Exception {
+    /**
+     * 描画(再描画)を行うイベント。<br>
+     * 
+     * 描画タイミング(描画間隔)を決めるのは、本クラスであり、 <br>
+     * F継承先クラスでは「描画する方法」のみに注力して実装することを期待している。
+     */
+    public abstract void repaint();
 
-		// 自身Windowの性質を決定
-		stage.initStyle(StageStyle.TRANSPARENT); // 透明ダイアログ(描画は内容物に任す)
+    /**
+     * デバッグ開始のイベント。<br>
+     * デバッグの内容は実装クラスが定義する。
+     */
+    public abstract void startDebug();
 
-		// 下地(シーンとグループ)作成。
-		final Group root = new Group();
-		scene = new Scene(root, 512, 512);
-		// 描画物を作成とともにグループへ突っ込む。
-		root.getChildren().add(bgImage = new ImageView());
-		root.getChildren().add(fgImage = new ImageView());
-		root.getChildren().add(carImage = new ImageView());
-		root.getChildren().add(dispTime = new Label());
+    /**
+     * 自身Viewの表示物に対し初期化を行う。
+     * 
+     * @throws Exception
+     */
+    protected void initView(Stage stage) throws Exception {
 
-		// 時刻デジタル表示域の初期化
-		dispTime.setFont(new Font("Verdana", 50L));
-		dispTime.setTextFill(Color.LIGHTBLUE);
+        // 自身Windowの性質を決定
+        stage.initStyle(StageStyle.TRANSPARENT); // 透明ダイアログ(描画は内容物に任す)
 
-		DropShadow ds = new DropShadow();
-		ds.setOffsetX(3);
-		ds.setOffsetY(3);
-		ds.setColor(Color.BLUE);
-		dispTime.setEffect(ds);
-		dispTime.relocate(10, scene.getHeight()
-				- (dispTime.getFont().getSize() + 10));
+        // 下地(シーンとグループ)作成。
+        final Group root = new Group();
+        scene = new Scene(root, 512, 512);
+        // 描画物を作成とともにグループへ突っ込む。
+        root.getChildren().add(bgImage = new ImageView());
+        root.getChildren().add(fgImage = new ImageView());
+        root.getChildren().add(carImage = new ImageView());
+        root.getChildren().add(dispTime = new Label());
 
-		// 雲だけはこの場でオブジェクトを作らない。
-		cloudImages = new ArrayList<ImageView>();
+        // 時刻デジタル表示域の初期化
+        dispTime.setFont(new Font("Verdana", 50L));
+        dispTime.setTextFill(Color.LIGHTBLUE);
 
-		// コンテキストメニュー(右クリックメニュー)の追加。
-		initMenu(root, scene);
+        DropShadow ds = new DropShadow();
+        ds.setOffsetX(3);
+        ds.setOffsetY(3);
+        ds.setColor(Color.BLUE);
+        dispTime.setEffect(ds);
+        dispTime.relocate(10, scene.getHeight()
+                - (dispTime.getFont().getSize() + 10));
 
-		stage.setScene(scene);
-		stage.setTitle("CleckDrive");
+        // 雲だけはこの場でオブジェクトを作らない。
+        cloudImages = new ArrayList<ImageView>();
 
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent e) {
-				onClose();
-			}
-		});
+        // コンテキストメニュー(右クリックメニュー)の追加。
+        initMenu(root, scene);
 
-		// TODO 描画域の角を丸める。
+        stage.setScene(scene);
+        stage.setTitle("CleckDrive");
 
-		// 継承先での描画物の初期化。
-		initDisplayObjects(scene);
-	}
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent e) {
+                onClose();
+            }
+        });
 
-	/**
-	 * コンテキストメニュー(右クリックメニュー)の追加。
-	 * 
-	 * @param root
-	 *            コントロールのコンテナ。
-	 * @param scene
-	 *            シーン。
-	 */
-	protected void initMenu(final Group root, final Scene scene) {
-		// メニュー追加。
-		final ContextMenu popup = new ContextMenu();
-		MenuItem mi = new MenuItem("終了する(_X)");
-		mi.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				Platform.exit();
-			}
-		});
-		popup.getItems().add(mi);
+        // TODO 描画域の角を丸める。
 
-		mi = new MenuItem("タイマー停止と再開(_T)");
-		mi.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				switchTimer();
-			}
-		});
-		popup.getItems().add(mi);
-		timerSwitchMenu = mi;
+        // 継承先での描画物の初期化。
+        initDisplayObjects(scene);
+    }
 
-		mi = new MenuItem("開発用(_D)");
-		mi.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				startDebug();
-			}
-		});
-		popup.getItems().add(mi);
+    /**
+     * コンテキストメニュー(右クリックメニュー)の追加。
+     * 
+     * @param root コントロールのコンテナ。
+     * @param scene シーン。
+     */
+    protected void initMenu(final Group root, final Scene scene) {
+        // メニュー追加。
+        final ContextMenu popup = new ContextMenu();
+        MenuItem mi = new MenuItem("終了する(_X)");
+        mi.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                Platform.exit();
+            }
+        });
+        popup.getItems().add(mi);
 
-		scene.setOnMouseClicked(new EventHandler<Event>() {
-			public void handle(Event event) {
-				// 右クリック時にポップアップメニューを表示
-				MouseEvent me = (MouseEvent) event;
-				if (me.getButton() == MouseButton.SECONDARY) {
-					popup.show(root, me.getScreenX(), me.getScreenY());
-				}
-			}
-		});
-	}
+        mi = new MenuItem("タイマー停止と再開(_T)");
+        mi.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                switchTimer();
+            }
+        });
+        popup.getItems().add(mi);
+        timerSwitchMenu = mi;
 
-	/**
-	 * タイマー制御。<br>
-	 * 指定されたスイッチ状態に変更する。
-	 */
-	protected void switchTimer(boolean newState) {
-		if (newState) {
-			timer.start();
-		} else {
-			timer.stop();
-		}
-		this.isTimerOn = newState;
-	}
+        mi = new MenuItem("開発用(_D)");
+        mi.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                startDebug();
+            }
+        });
+        popup.getItems().add(mi);
 
-	/**
-	 * タイマー制御。<br>
-	 * 状態未指定版のオーバーロードメソッド。指定無しの場合「現在の状態を逆転」させる。
-	 */
-	protected void switchTimer() {
-		switchTimer(!this.isTimerOn);
-	}
+        scene.setOnMouseClicked(new EventHandler<Event>() {
+            public void handle(Event event) {
+                // 右クリック時にポップアップメニューを表示
+                MouseEvent me = (MouseEvent) event;
+                if (me.getButton() == MouseButton.SECONDARY) {
+                    popup.show(root, me.getScreenX(), me.getScreenY());
+                }
+            }
+        });
+    }
 
-	/**
-	 * 閉じられる際に起こるイベント。
-	 */
-	protected void onClose() {
-		// 空実装。
-	}
+    /**
+     * タイマー制御。<br>
+     * 指定されたスイッチ状態に変更する。
+     */
+    protected void switchTimer(boolean newState) {
+        if (newState) {
+            timer.start();
+        } else {
+            timer.stop();
+        }
+        this.isTimerOn = newState;
+    }
 
-	/**
-	 * 自身Viewの活動を開始する。
-	 */
-	@Override
-	public void start(Stage stage) throws Exception {
-		// 自身描画物の初期化
-		initView(stage);
-		// 表示
-		stage.show();
-		// 描画ループ
-		timer = new AnimationTimer() {
-			private long timing; // 前回同期をとったタイミング。
-			@Override
-			public void handle(long now) {
-				// 変化なしフレームは破棄。
-				long nowTiming = now / INTERVAL_NANO_SEC;
-				if (timing == nowTiming) {
-					return;
-				}
-				timing = nowTiming;
+    /**
+     * タイマー制御。<br>
+     * 状態未指定版のオーバーロードメソッド。指定無しの場合「現在の状態を逆転」させる。
+     */
+    protected void switchTimer() {
+        switchTimer(!this.isTimerOn);
+    }
 
-				repaint();
-			}
-		};
-		isTimerOn = true;
-		timer.start();
-	}
+    /**
+     * 閉じられる際に起こるイベント。
+     */
+    protected void onClose() {
+        // 空実装。
+    }
+
+    /**
+     * 自身Viewの活動を開始する。
+     */
+    @Override
+    public void start(Stage stage) throws Exception {
+        // 自身描画物の初期化
+        initView(stage);
+        // 表示
+        stage.show();
+        // 描画ループ
+        timer = new AnimationTimer() {
+            private long timing; // 前回同期をとったタイミング。
+
+            @Override
+            public void handle(long now) {
+                // 変化なしフレームは破棄。
+                long nowTiming = now / INTERVAL_NANO_SEC;
+                if (timing == nowTiming) {
+                    return;
+                }
+                timing = nowTiming;
+
+                repaint();
+            }
+        };
+        isTimerOn = true;
+        timer.start();
+    }
 
 }
