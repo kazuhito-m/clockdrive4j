@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
@@ -25,9 +26,9 @@ import tk.bnbm.clockdrive4j.model.Road;
 
 /**
  * 本アプリケーション、メインビューのクラス。<br>
- *
+ * 
  * the "Clock Drive"である。
- *
+ * 
  * @author kazuhito_m
  */
 
@@ -36,7 +37,7 @@ public class MainView extends LayoutAndEventView {
 	// 定数群。
 
 	/** 左下時刻表示域の時刻書式 */
-	private static final DateFormat FMT_TIME = new SimpleDateFormat("hh:mm:ss");
+	private static final DateFormat FMT_TIME = new SimpleDateFormat("HH:mm:ss");
 
 	// Modelオブジェクト群。
 
@@ -53,9 +54,12 @@ public class MainView extends LayoutAndEventView {
 	protected Cloud cloud;
 
 	// 広域変数(プロパティ)
-	private Date current;
+	
+	/** 現在表示中の時刻	*/
+ 	protected Date current;
 
-	protected Stage debugStage;
+ 	/** デバッグ画面のステージ。(立ち上がってない場合はnull) */
+	private Stage debugStage;
 
 	/**
 	 * 描画物体の初期化を行うイベント。<br>
@@ -97,8 +101,9 @@ public class MainView extends LayoutAndEventView {
 
 	/**
 	 * 指定された時刻の時計イメージをすべて描く。
-	 *
-	 * @param date 表示を行う時刻。
+	 * 
+	 * @param date
+	 *            表示を行う時刻。
 	 */
 	protected void draw(Date time) {
 		// 現在時刻を記憶。
@@ -112,8 +117,9 @@ public class MainView extends LayoutAndEventView {
 
 	/**
 	 * 指定された時刻に応じた背景を描く。
-	 *
-	 * @param time 表示を行う時刻。
+	 * 
+	 * @param time
+	 *            表示を行う時刻。
 	 */
 	private void drawBackGround(Date time) {
 		// 時刻セット
@@ -130,8 +136,9 @@ public class MainView extends LayoutAndEventView {
 
 	/**
 	 * 指定された時刻に応じて、適切な位置と角度で車を描く。
-	 *
-	 * @param time 表示を行う時刻。
+	 * 
+	 * @param time
+	 *            表示を行う時刻。
 	 */
 	private void drawCar(Date time) {
 		// 時刻セット。
@@ -147,8 +154,9 @@ public class MainView extends LayoutAndEventView {
 
 	/**
 	 * 指定された時刻に応じて、デジタル時刻を描く。
-	 *
-	 * @param time 表示を行う時刻。
+	 * 
+	 * @param time
+	 *            表示を行う時刻。
 	 */
 	private void drawDigitalTime(Date time) {
 		dispTime.setText(FMT_TIME.format(time));
@@ -202,6 +210,9 @@ public class MainView extends LayoutAndEventView {
 			if ((s.getX() + s.getWidth()) > allWidth) {
 				s.setX(s.getX() - s.getWidth());
 			}
+			// 右クリックメニューの「タイマーの…」を殺す。
+			this.timerSwitchMenu.setDisable(true);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -213,6 +224,9 @@ public class MainView extends LayoutAndEventView {
 	public void endDebug() {
 		if (debugStage != null) {
 			debugStage = null;
+			this.switchTimer(true); // タイマーを有効に。
+			// 右クリックメニューの「タイマーの…」を復活。
+			this.timerSwitchMenu.setDisable(false);
 		}
 	}
 
@@ -227,8 +241,9 @@ public class MainView extends LayoutAndEventView {
 
 	/**
 	 * アプリケーションのエントリポイント。
-	 *
-	 * @param args コマンドライン引数。
+	 * 
+	 * @param args
+	 *            コマンドライン引数。
 	 */
 	public static void main(String[] args) {
 		Application.launch(MainView.class, args);

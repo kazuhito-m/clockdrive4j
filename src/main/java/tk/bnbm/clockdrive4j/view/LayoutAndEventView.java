@@ -37,7 +37,7 @@ public abstract class LayoutAndEventView extends Application {
 	// 描画制御系定数
 	
 	/** 描画間隔(ナノ秒) */
-	private static final long INTERVAL_NANO_SEC = 100000000L; // 描画間隔(ナノ秒)
+	private static final long INTERVAL_NANO_SEC = 200000000L; // 描画間隔(ナノ秒)
 
 	// 描画オブジェクト群
 
@@ -56,6 +56,9 @@ public abstract class LayoutAndEventView extends Application {
 	/** "雲"イメージ群(List)。 */
 	protected List<ImageView> cloudImages;
 
+	/** タイマーの停止と起動メニュー */
+	protected MenuItem timerSwitchMenu;
+	
 	/** タイマーオブジェクト。 */
 	protected AnimationTimer timer;
 
@@ -165,6 +168,7 @@ public abstract class LayoutAndEventView extends Application {
 			}
 		});
 		popup.getItems().add(mi);
+		timerSwitchMenu = mi;
 
 		mi = new MenuItem("開発用(_D)");
 		mi.setOnAction(new EventHandler<ActionEvent>() {
