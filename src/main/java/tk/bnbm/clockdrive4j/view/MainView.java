@@ -6,13 +6,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import tk.bnbm.clockdrive4j.model.BackGround;
 import tk.bnbm.clockdrive4j.model.Car;
 import tk.bnbm.clockdrive4j.model.Cloud;
@@ -50,7 +55,7 @@ public class MainView extends LayoutAndEventView {
 	// 広域変数(プロパティ)
 	private Date current;
 
-	DebugForm debugForm;
+	protected Stage debugStage;
 
 	/**
 	 * 描画物体の初期化を行うイベント。<br>
@@ -172,14 +177,22 @@ public class MainView extends LayoutAndEventView {
 			this.switchTimer(false);
 			// 表示。(あればそれを、無ければ新規作成)
 			Stage s;
-			if (debugForm == null) {
+			if (debugStage == null) {
 				s = new Stage();
-				DebugForm df = new DebugForm(this);
-				df.start(s);
-				debugForm = df; // 自身プロパティに保存
+				// コールバックメソッド登録。
+				s.setOnCloseRequest(new EventHandler<WindowEvent>() {
+					public void handle(WindowEvent we) {
+						endDebug();
+					}
+				});
+				DebugForm.setDebugTarget(this);
+				DebugForm.initStage(s); // 形状はコントローラに操作してもらう。
+				s.show();
+				debugStage = s;
 			} else {
-				s = debugForm.self;
+				s = debugStage;
 			}
+
 			// 初期位置計算。(自画面の右横上に隣接する形で)
 			Window self = scene.getWindow();
 			s.setX(self.getX() + self.getWidth());
@@ -187,7 +200,7 @@ public class MainView extends LayoutAndEventView {
 			// 画面からはみ出しちゃったら、反対側に表示する
 			double allWidth = Screen.getPrimary().getBounds().getWidth();
 			if ((s.getX() + s.getWidth()) > allWidth) {
-				s.setX(self.getX() - s.getWidth());
+				s.setX(s.getX() - s.getWidth());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -198,8 +211,8 @@ public class MainView extends LayoutAndEventView {
 	 * デバッグ終了。
 	 */
 	public void endDebug() {
-		if (debugForm != null) {
-			debugForm = null;
+		if (debugStage != null) {
+			debugStage = null;
 		}
 	}
 
@@ -207,8 +220,8 @@ public class MainView extends LayoutAndEventView {
 	 * 閉じられる際に呼ばれるイベント。
 	 */
 	protected void onClose() {
-		if (debugForm != null) {
-			debugForm.self.close();
+		if (debugStage != null) {
+			debugStage.close();
 		}
 	}
 

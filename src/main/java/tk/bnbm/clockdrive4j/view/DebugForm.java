@@ -1,52 +1,82 @@
 package tk.bnbm.clockdrive4j.view;
 
-import javafx.application.Application;
-import javafx.event.EventHandler;
+import java.io.IOException;
+
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import javafx.stage.StageStyle;
 
 /**
- * デバッグ用ダイアログ。
+ * デバッグ用ダイアログのコントロールクラス。
+ *
  * @author kazuhito_m
  */
-public class DebugForm extends Application {
+public class DebugForm {
 
-	/** デバッグ対象の「アプリケーションメイン画面」 */
-	protected MainView debugTarget;
+	// 自身コントロール群
 
-	/** サイズ等を弄うためのステージオブジェクト。 */
-	protected Stage self;
+	@FXML
+	protected TextField targetDate;
+
+	@FXML
+	protected Button oneDayTravel;
+
+	@FXML
+	protected Button oneHourDrive;
+
+	@FXML
+	protected Button recordRoad;
 
 	/**
-	 * コンストラクタで親画面を保存。
-	 * @param target 親画面。
+	 * デバッグ対象の「アプリケーションメイン画面」<br>
+	 * ※プログラムからこのクラスのインスタンスにアクセスできないため、static変数を使用して繋ぐ。
 	 */
-	public DebugForm(MainView target) {
-		this.debugTarget = target;
+	protected static MainView debugTarget;
+
+	@FXML
+	protected void doOneDayTraval(ActionEvent a) {
+		System.out.println("doOneDayTraval実行されたよ！");
+	}
+
+	@FXML
+	protected void doOneHourDrive(ActionEvent a) {
+		System.out.println("doOneHourDrive実行されたよ！");
+	}
+
+	@FXML
+	protected void doRecordRoad(ActionEvent a) {
+		System.out.println("doRecordRoad実行されたよ！");
+	}
+
+	// Setter/Getter
+
+	/**
+	 * @param debugTarget セットする debugTarget
+	 */
+	public static void setDebugTarget(MainView target) {
+		debugTarget = target;
 	}
 
 	/**
-	 * 画面開始。
+	 * DebugFormの外側(stage)の形状を決め、初期化する。
+	 *
+	 * @param s
+	 * @throws IOException
 	 */
-	@Override
-	public void start(Stage stage) throws Exception {
-		// デバッグダイアログ用意。
-		stage.setTitle("DebugForm");
-		Parent root = FXMLLoader.load(getClass().getResource("debugForm.fxml"));
+	public static void initStage(Stage s) throws IOException {
+		s.setTitle("DebugForm");
+		s.initStyle(StageStyle.UTILITY); // 作業用ダイアログ。
+		Parent root = FXMLLoader.load(DebugForm.class
+				.getResource("debugForm.fxml"));
 		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.setResizable(false);
-		stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-			public void handle(WindowEvent we) {
-				// コールバックメソッド登録。
-				debugTarget.endDebug();
-			}
-		});
-		stage.show();
-		self = stage;
+		s.setScene(scene);
+		s.setResizable(false);
 	}
 
 }

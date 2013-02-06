@@ -24,13 +24,8 @@ public class DebugFormTest {
 
 	@Before
 	public void setUp() throws Exception {
-		this.sut = new DebugForm(new MainView());
 	}
 
-	@Test
-	public final void コンストラクタにてデバッグ対象がセットされている() {
-		assertThat(sut.debugTarget, is(notNullValue()));
-	}
 
 	@Ignore
 	@Test
@@ -39,9 +34,9 @@ public class DebugFormTest {
 		// Arrange - 準備
 		Stage stage = new Stage();	//
 		// Act - 実行
-		sut.start(stage);
+//		sut.start(stage);
 		// Assert - 検証
-		assertThat(sut.self, is(stage));
+		//		assertThat(sut.self, is(stage));
 	}
 
 }
