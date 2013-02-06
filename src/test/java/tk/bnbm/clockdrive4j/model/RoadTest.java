@@ -6,7 +6,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Before;
@@ -16,6 +18,8 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Roadクラスのテスト。
@@ -27,6 +31,9 @@ public class RoadTest {
 
 	@RunWith(Theories.class)
 	public static class RoadクラスのgetRoadPositionメソッドのテスト {
+
+		// 意味履き違えてTheories(総当たり)で作ってしまったが、良いサンプルなので残しておく。
+		// (本来であれば、Parameterized(パラメタライズ)テストとして作るべき。)
 
 		private Road sut;
 
@@ -73,20 +80,35 @@ public class RoadTest {
 		}
 	}
 
-	@RunWith(Theories.class)
+	@RunWith(Parameterized.class)
 	public static class RoadクラスのcalcPositionRatioメソッドパラメタライズドテスト {
 
-		@DataPoints
-		public static double[][] VALUES = { { 0, 0, 0, 0.0 }, { 6, 0, 0, 0.5 },
-				{ 12, 0, 0, 0 }, { 23, 0, 0, 1.0 - (1.0 / 12) } };
+		private int hour;
+		private int minite;
+		private int second;
+		private double angle;
 
-		@Theory
-		public void 与えた時刻に応じて文字盤上の角度が得られる(double[] values) {
-			double angle = values[3];
+		public RoadクラスのcalcPositionRatioメソッドパラメタライズドテスト(int hour, int minite,
+				int second, double angle) {
+			this.hour = hour;
+			this.minite = minite;
+			this.second = second;
+			this.angle = angle;
+		}
+
+		@Parameters
+		public static Collection<Object[]> getParam() {
+			Object[][] params = { { 0, 0, 0, 0.0 }, { 6, 0, 0, 0.5 },
+					{ 12, 0, 0, 0 }, { 23, 0, 0, 1.0 - (1.0 / 12) } };
+			return Arrays.asList(params);
+		}
+
+		@Test
+		public void 与えた時刻に応じて文字盤上の角度が得られる() {
 			Calendar c = Calendar.getInstance();
-			c.set(2000, 1, 1, (int) values[0], (int) values[1], (int) values[2]);
+			c.set(2000, 1, 1, hour, minite, second);
 
-			assertThat(angle, is(Road.calcPositionRatio(c.getTime())));
+			assertThat(Road.calcPositionRatio(c.getTime()), is(angle));
 		}
 	}
 
