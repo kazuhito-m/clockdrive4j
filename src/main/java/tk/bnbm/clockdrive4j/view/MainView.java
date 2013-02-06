@@ -18,6 +18,14 @@ import tk.bnbm.clockdrive4j.model.Car;
 import tk.bnbm.clockdrive4j.model.Cloud;
 import tk.bnbm.clockdrive4j.model.Road;
 
+/**
+ * 本アプリケーション、メインビューのクラス。<br>
+ *
+ * the "Clock Drive"である。
+ *
+ * @author kazuhito_m
+ */
+
 public class MainView extends LayoutAndEventView {
 
 	// 定数群。
