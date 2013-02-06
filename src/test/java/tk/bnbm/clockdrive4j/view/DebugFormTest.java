@@ -1,8 +1,6 @@
 package tk.bnbm.clockdrive4j.view;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.*;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import org.junit.Before;
@@ -24,19 +22,25 @@ public class DebugFormTest {
 
 	@Before
 	public void setUp() throws Exception {
+		sut = new DebugForm();
+		sut.targetDate = new TextField();
 	}
 
+	@Test
+	public void 初期化後に日付表示域には値が入っているか() {
+
+	}
 
 	@Ignore
 	@Test
 	public final void startによりステージオブジェクトがセットされる() throws Exception {
 		// FIXME Mockでのテスト技法を期待。(現在勉強不足で使えず…）
 		// Arrange - 準備
-		Stage stage = new Stage();	//
+		Stage stage = new Stage(); //
 		// Act - 実行
-//		sut.start(stage);
+		// sut.start(stage);
 		// Assert - 検証
-		//		assertThat(sut.self, is(stage));
+		// assertThat(sut.self, is(stage));
 	}
 
 }
