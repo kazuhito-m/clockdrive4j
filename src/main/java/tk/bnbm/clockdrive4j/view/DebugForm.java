@@ -78,7 +78,6 @@ public class DebugForm {
 
     /**
      * 「24時間ぐるっと旅をする！！」クリックイベント。
-     *
      * @param a イベントオブジェクト。
      */
     @FXML
@@ -89,7 +88,6 @@ public class DebugForm {
 
     /**
      * 「1時間ドライブする！！」クリックイベント。
-     *
      * @param a イベントオブジェクト。
      */
     @FXML
@@ -99,19 +97,28 @@ public class DebugForm {
     }
 
     /**
-     * 「"道"の軌跡を記録する。」クリックイベント。
-     *
+     * 「ClockDriveを終了する」クリックイベント。
      * @param a イベントオブジェクト。
      */
     @FXML
     protected void doRecordRoad(ActionEvent a) {
         buttonDisableControl(recordRoad); // ボタンの有効無効制御。
+        // TODO 実装
         System.out.println("doRecordRoad実行されたよ！");
     }
 
     /**
+     * 「1時間ドライブする！！」クリックイベント。
+     * @param a イベントオブジェクト。
+     */
+    @FXML
+    protected void doShutdown(ActionEvent a) {
+        // TODO 実装
+        System.out.println("アプリケーションの終了がおされた。");
+    }
+
+    /**
      * 早回しでシミュレート開始する（２４時間 or １時間）
-     *
      * @param hour 指定の時間。
      */
     protected void simulate(final int totalHours) {
@@ -152,7 +159,6 @@ public class DebugForm {
     /**
      * ボタンの有効・無効制御。<br>
      * 表示が「気持ち悪くなる」ので、最低限の「この最中は、これできない」を制御。
-     *
      * @param target
      */
     private void buttonDisableControl(Button target) {
@@ -183,7 +189,6 @@ public class DebugForm {
     /**
      * デバッグ対象を外部から与える。<br>
      * アプリケーションからは、このオブジェクトが見えないため、クラス変数を利用しセットする。
-     *
      * @param sut セットするデバッグ対象画面オブジェクト。
      */
     public static void setDebugTarget(MainView target) {
@@ -192,7 +197,6 @@ public class DebugForm {
 
     /**
      * DebugFormの外側(stage)の形状を決め、初期化する。
-     *
      * @param s
      * @throws IOException
      */
