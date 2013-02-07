@@ -99,11 +99,14 @@ public class BackGround {
      * @return ブレンド率数値(百分率)
      */
     public double getBlendRatio() {
-        int iCnt = imageFileNames.length;
-        double ratio = ((time.get(HOUR_OF_DAY) % (24 / iCnt))
-                + (time.get(MINUTE) % 60 / 60.0) + (time.get(SECOND) % 60 / 60.0 / 60.0))
-                / (24 / iCnt);
+
+        double partHours = (double) (24 / imageFileNames.length); // 背景パーツ、一枚がカバーする時間。
+        double hour = (double) time.get(HOUR_OF_DAY);
+        double min = (double) time.get(MINUTE);
+        double sec = (double) time.get(SECOND);
+
+        double ratio = (hour % partHours + min / 60D + sec / 3600D) / partHours;
+
         return ratio;
     }
-
 }

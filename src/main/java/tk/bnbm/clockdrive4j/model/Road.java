@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 
 /**
  * "道路"を司るクラス。
- * 
+ *
  * @author kazuhito_m
  */
 public class Road {
@@ -26,7 +26,7 @@ public class Road {
 
     /**
      * コンストラクタ。
-     * 
+     *
      * @param roadCsvFilePath 読み込むファイルのパス。
      * @throws IOException
      * @throws NumberFormatException
@@ -39,7 +39,7 @@ public class Road {
 
     /**
      * カンマ区切りかタブ区切りの道路上座標ＣＳＶファイルを読み込み、格納しておく。
-     * 
+     *
      * @param roadCsvFilePath 読み込むCSVファイルのパス。
      * @throws IOException
      * @throws NumberFormatException
@@ -47,8 +47,8 @@ public class Road {
     protected void loadCsvFromFile(String roadCsvFilePath)
             throws NumberFormatException, IOException {
 
-        FileReader fr = new FileReader(roadCsvFilePath);
-        BufferedReader br = new BufferedReader(fr);
+        FileReader fr = null;
+        BufferedReader br = null;
 
         try {
 
@@ -78,7 +78,7 @@ public class Road {
 
     /**
      * 時刻に応じた角度を算出するための係数を、0～1.0の範囲で得る。
-     * 
+     *
      * @param time 角度と対応する時刻。
      * @return 指定した時刻に居るべき角度。
      */
@@ -96,7 +96,7 @@ public class Road {
     /**
      * 与えた時間に応じた、道路上の位置を得る。<br>
      * 近傍２点から、微妙な位置を滑らかに補完する。
-     * 
+     *
      * @param time 指定時刻(時分秒を対象)。
      * @return 点オブジェクト。
      */

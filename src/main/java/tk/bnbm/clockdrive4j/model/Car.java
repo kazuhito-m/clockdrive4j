@@ -17,7 +17,7 @@ public class Car {
     /**
      * コンストラクタ。<br>
      * 引数にRoadインスタンスを受け取って、格納する。
-     * 
+     *
      * @param road 自身が走ることになる"道路"オブジェクト。
      */
     public Car(Road road) {
@@ -26,16 +26,16 @@ public class Car {
 
     /**
      * 基準時刻を与える。
-     * 
+     *
      * @param t 基準時刻。
      */
     public void setTime(Date t) {
-        time = t;
+        this.time = t;
     }
 
     /**
      * 車を描くべき位置を取得する。
-     * 
+     *
      * @return 座標オブジェクト。
      */
     public Point2D.Double getPosition() {
@@ -45,7 +45,7 @@ public class Car {
     /**
      * 車をの向き(描くべき角度を360度法)を取得する。<br>
      * 前後２点から滑らかに補完する。
-     * 
+     *
      * @return 角度(360度法)
      */
     public double getAngle() {

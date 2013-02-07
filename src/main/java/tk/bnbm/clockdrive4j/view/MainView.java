@@ -22,9 +22,9 @@ import tk.bnbm.clockdrive4j.model.Road;
 
 /**
  * 本アプリケーション、メインビューのクラス。<br>
- * 
+ *
  * the "Clock Drive"である。
- * 
+ *
  * @author kazuhito_m
  */
 
@@ -33,7 +33,7 @@ public class MainView extends LayoutAndEventView {
     // 定数群。
 
     /** 左下時刻表示域の時刻書式 */
-    private static final DateFormat FMT_TIME = new SimpleDateFormat("HH:mm:ss");
+    private static final String FMT_TIME = "HH:mm:ss";
 
     // Modelオブジェクト群。
 
@@ -97,7 +97,7 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * 指定された時刻の時計イメージをすべて描く。
-     * 
+     *
      * @param date 表示を行う時刻。
      */
     protected void draw(Date time) {
@@ -112,7 +112,7 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * 指定された時刻に応じた背景を描く。
-     * 
+     *
      * @param time 表示を行う時刻。
      */
     private void drawBackGround(Date time) {
@@ -130,7 +130,7 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * 指定された時刻に応じて、適切な位置と角度で車を描く。
-     * 
+     *
      * @param time 表示を行う時刻。
      */
     private void drawCar(Date time) {
@@ -147,11 +147,11 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * 指定された時刻に応じて、デジタル時刻を描く。
-     * 
+     *
      * @param time 表示を行う時刻。
      */
     private void drawDigitalTime(Date time) {
-        dispTime.setText(FMT_TIME.format(time));
+        dispTime.setText(new SimpleDateFormat(FMT_TIME).format(time));
     }
 
     /**
@@ -233,7 +233,7 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * アプリケーションのエントリポイント。
-     * 
+     *
      * @param args コマンドライン引数。
      */
     public static void main(String[] args) {

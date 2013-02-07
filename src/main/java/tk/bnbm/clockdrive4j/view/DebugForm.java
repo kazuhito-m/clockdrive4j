@@ -1,7 +1,6 @@
 package tk.bnbm.clockdrive4j.view;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,8 +29,7 @@ public class DebugForm {
     // 定数。
 
     /** 時刻表示域の時刻書式 */
-    private static final DateFormat FMT_DT = new SimpleDateFormat(
-            "yyyy/MM/dd HH:mm:ss");
+    private static final String FMT_DT = "yyyy/MM/dd HH:mm:ss";
 
     // 自身コントロール群
 
@@ -57,7 +55,7 @@ public class DebugForm {
      * デバッグ対象の「アプリケーションメイン画面」<br>
      * ※プログラムからこのクラスのインスタンスにアクセスできないため、static変数を使用して繋ぐ。
      */
-    protected static MainView sut;
+    private static MainView sut;
 
     /**
      * 時刻値が変更されたら、親フォームの描画内容へ反映させる
@@ -69,7 +67,8 @@ public class DebugForm {
         Date validTime;
         try {
             targetDate.setTooltip(null);
-            validTime = FMT_DT.parse(targetDate.getText());
+            validTime = new SimpleDateFormat(FMT_DT)
+                    .parse(targetDate.getText());
             sut.draw(validTime);
         } catch (ParseException pe) {
             targetDate.setTooltip(new Tooltip("日付時刻として表示できる文字でね♪"));
@@ -212,7 +211,7 @@ public class DebugForm {
         for (Object n : root.getChildrenUnmodifiable()) {
             if (n instanceof TextField) {
                 TextField tf = (TextField) n;
-                tf.setText(FMT_DT.format(new Date()));
+                tf.setText(new SimpleDateFormat(FMT_DT).format(new Date()));
             }
         }
     }
