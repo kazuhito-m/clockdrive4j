@@ -20,10 +20,8 @@ import tk.bnbm.clockdrive4j.model.Cloud;
 import tk.bnbm.clockdrive4j.model.Road;
 
 /**
- * 本アプリケーション、メインビューのクラス。<br>
- *
- * the "Clock Drive"である。
- *
+ * 本アプリケーション、メインビューのクラス。
+ * <br> いわば、the "Clock Drive"である。
  * @author kazuhito_m
  */
 
@@ -57,10 +55,11 @@ public class MainView extends LayoutAndEventView {
     private Stage debugStage;
 
     /**
-     * 描画物体の初期化を行うイベント。<br>
+     * 描画物体の初期化を行うイベント。
+     * @param scene 自身画面表示用のシーンオブジェクト。
      */
     @Override
-    public void initDisplayObjects(Scene scene) throws Exception {
+    public void initDisplayObjects(final Scene scene) throws Exception {
         // Modelオブジェクト群初期化。
         bg = new BackGround("./target/classes/images/");
         road = new Road("./target/classes/datas/roadData.csv");
@@ -96,10 +95,9 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * 指定された時刻の時計イメージをすべて描く。
-     *
      * @param date 表示を行う時刻。
      */
-    protected void draw(Date time) {
+    protected void draw(final Date time) {
         // 現在時刻を記憶。
         current = time;
         // Modelの現在内容を描画更新。
@@ -111,10 +109,9 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * 指定された時刻に応じた背景を描く。
-     *
      * @param time 表示を行う時刻。
      */
-    private void drawBackGround(Date time) {
+    private void drawBackGround(final Date time) {
         // 時刻セット
         bg.setTime(time);
         // その時刻から割り出される背景を割り出す。
@@ -132,7 +129,7 @@ public class MainView extends LayoutAndEventView {
      *
      * @param time 表示を行う時刻。
      */
-    private void drawCar(Date time) {
+    private void drawCar(final Date time) {
         // 時刻セット。
         car.setTime(time);
         // 自身のイメージの大きさを考慮し「中心にくる」考慮を入れた座標計算。
@@ -149,14 +146,15 @@ public class MainView extends LayoutAndEventView {
      *
      * @param time 表示を行う時刻。
      */
-    private void drawDigitalTime(Date time) {
+    private void drawDigitalTime(final Date time) {
         dispTime.setText(new SimpleDateFormat(FMT_TIME).format(time));
     }
 
     /**
      * 雲の影を描く。
+     * @param distance 雲の現在位置よりの移動距離。
      */
-    private void drawClouds(double distance) {
+    private void drawClouds(final double distance) {
         // 指定された距離で雲を移動。
         cloud.move(distance);
         // 座標を移植し移動。
@@ -232,10 +230,9 @@ public class MainView extends LayoutAndEventView {
 
     /**
      * アプリケーションのエントリポイント。
-     *
      * @param args コマンドライン引数。
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         Application.launch(MainView.class, args);
     }
 

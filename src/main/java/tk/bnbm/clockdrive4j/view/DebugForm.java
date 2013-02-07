@@ -21,14 +21,13 @@ import javafx.stage.StageStyle;
 
 /**
  * デバッグ用ダイアログのコントロールクラス。
- *
  * @author kazuhito_m
  */
 public class DebugForm {
 
     // 定数。
 
-    /** 時刻表示域の時刻書式 */
+    /** 時刻表示域の時刻書式。 */
     private static final String FMT_DT = "yyyy/MM/dd HH:mm:ss";
 
     // 自身コントロール群
@@ -59,11 +58,10 @@ public class DebugForm {
 
     /**
      * 時刻値が変更されたら、親フォームの描画内容へ反映させる
-     *
-     * @param e
+     * @param e イベントオブジェクト。
      */
     @FXML
-    protected void doTextChanged(Event e) {
+    protected void doTextChanged(final Event e) {
         Date validTime;
         try {
             targetDate.setTooltip(null);
@@ -80,7 +78,7 @@ public class DebugForm {
      * @param a イベントオブジェクト。
      */
     @FXML
-    protected void doOneDayTraval(ActionEvent a) {
+    protected void doOneDayTraval(final ActionEvent a) {
         buttonDisableControl(oneDayTravel); // ボタンの有効無効制御。
         simulate(24);
     }
@@ -90,7 +88,7 @@ public class DebugForm {
      * @param a イベントオブジェクト。
      */
     @FXML
-    protected void doOneHourDrive(ActionEvent a) {
+    protected void doOneHourDrive(final ActionEvent a) {
         buttonDisableControl(oneHourDrive); // ボタンの有効無効制御。
         simulate(1);
     }
@@ -100,7 +98,7 @@ public class DebugForm {
      * @param a イベントオブジェクト。
      */
     @FXML
-    protected void doRecordRoad(ActionEvent a) {
+    protected void doRecordRoad(final ActionEvent a) {
         buttonDisableControl(recordRoad); // ボタンの有効無効制御。
         // TODO 実装
         System.out.println("doRecordRoad実行されたよ！");
@@ -111,7 +109,7 @@ public class DebugForm {
      * @param a イベントオブジェクト。
      */
     @FXML
-    protected void doShutdown(ActionEvent a) {
+    protected void doShutdown(final ActionEvent a) {
         // TODO 実装
         System.out.println("アプリケーションの終了がおされた。");
     }
@@ -158,9 +156,9 @@ public class DebugForm {
     /**
      * ボタンの有効・無効制御。<br>
      * 表示が「気持ち悪くなる」ので、最低限の「この最中は、これできない」を制御。
-     * @param target
+     * @param target 主役となるボタン。
      */
-    private void buttonDisableControl(Button target) {
+    private void buttonDisableControl(final Button target) {
         final String STOP_CAPT = "終了";
         Button[] buttons = new Button[] { oneDayTravel, oneHourDrive,
                 recordRoad };
@@ -190,16 +188,16 @@ public class DebugForm {
      * アプリケーションからは、このオブジェクトが見えないため、クラス変数を利用しセットする。
      * @param sut セットするデバッグ対象画面オブジェクト。
      */
-    public static void setDebugTarget(MainView target) {
+    public static void setDebugTarget(final MainView target) {
         sut = target;
     }
 
     /**
      * DebugFormの外側(stage)の形状を決め、初期化する。
-     * @param s
+     * @param s 自身ダイアログを描画予定であるステージオブジェクト。
      * @throws IOException
      */
-    public static void initStage(Stage s) throws IOException {
+    public static void initStage(final Stage s) throws IOException {
         s.setTitle("DebugForm");
         s.initStyle(StageStyle.DECORATED); // 作業用ダイアログ。
         Parent root = FXMLLoader.load(DebugForm.class

@@ -25,10 +25,8 @@ import javafx.stage.WindowEvent;
 
 /**
  * 本アプリケーション、メインビューの基底抽象クラス。<br>
- *
  * 描画物のレイアウトと各種イベントのキックを責務とする。<br>
  * Modelオブジェクトとの紐づけ・描画反映はおこなわず、継承先クラスが行うものとする。
- *
  * @author kazuhito_m
  */
 public abstract class LayoutAndEventView extends Application {
@@ -69,15 +67,13 @@ public abstract class LayoutAndEventView extends Application {
 
     /**
      * 描画物体の初期化を行うイベント。<br>
-     *
      * 描画物体とそのレイアウトを行うのはこの本クラスの責務だが、<br>
      * その初期化(ImageViewなら元画像のセット）などは、一度きりのここで行う。
      */
-    public abstract void initDisplayObjects(Scene scene) throws Exception;
+    public abstract void initDisplayObjects(final Scene scene) throws Exception;
 
     /**
      * 描画(再描画)を行うイベント。<br>
-     *
      * 描画タイミング(描画間隔)を決めるのは、本クラスであり、 <br>
      * F継承先クラスでは「描画する方法」のみに注力して実装することを期待している。
      */
@@ -91,10 +87,9 @@ public abstract class LayoutAndEventView extends Application {
 
     /**
      * 自身Viewの表示物に対し初期化を行う。
-     *
      * @throws Exception
      */
-    protected void initView(Stage stage) throws Exception {
+    protected void initView(final Stage stage) throws Exception {
 
         // 自身Windowの性質を決定
         stage.initStyle(StageStyle.TRANSPARENT); // 透明ダイアログ(描画は内容物に任す)
@@ -143,7 +138,6 @@ public abstract class LayoutAndEventView extends Application {
 
     /**
      * コンテキストメニュー(右クリックメニュー)の追加。
-     *
      * @param root コントロールのコンテナ。
      * @param scene シーン。
      */
@@ -190,7 +184,7 @@ public abstract class LayoutAndEventView extends Application {
      * タイマー制御。<br>
      * 指定されたスイッチ状態に変更する。
      */
-    protected void switchTimer(boolean newState) {
+    protected void switchTimer(final boolean newState) {
         if (newState) {
             timer.start();
         } else {
@@ -216,9 +210,10 @@ public abstract class LayoutAndEventView extends Application {
 
     /**
      * 自身Viewの活動を開始する。
+     * @param stage 描画対象のステージオブジェクト。
      */
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(final Stage stage) throws Exception {
         // 自身描画物の初期化
         initView(stage);
         // 表示
