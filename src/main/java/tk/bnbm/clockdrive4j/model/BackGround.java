@@ -31,7 +31,7 @@ public class BackGround {
     /**
      * コンストラクタ。<br>
      * 背景画像を読み込むフォルダを受け取って、背景画像のファイル名一覧を取得する。
-     * 
+     *
      * @param imagePath 画像ファイルのローカルパス。
      */
     public BackGround(String imagePath) {
@@ -44,12 +44,12 @@ public class BackGround {
         // 順番が狂うため、ファイル名でソート
         List<File> files = Arrays.asList(imageFileNames);
         Collections.sort(files);
-        imageFileNames = (File[]) files.toArray();
+        imageFileNames = files.toArray(new File[0]); // PMDで怒られた…型確定には引数に「型だけ教える空の配列」が要るようだ。
     }
 
     /**
      * 基準時刻を与える。
-     * 
+     *
      * @param t 与える基準時刻。
      */
     public void setTime(Date t) {
@@ -58,7 +58,7 @@ public class BackGround {
 
     /**
      * 背景画像Ａ（２枚ブレンドするうち、先にベタ塗りする方）のファイルパスを取得する。
-     * 
+     *
      * @return ファイルパス。
      */
     public String getSrcImagePath() {
@@ -69,7 +69,7 @@ public class BackGround {
     /**
      * 背景画像Ｂ（２枚ブレンドするうち、後で半透明に描く方）のファイルパスを取得する。<br>
      * たとえば全部で４枚なら、２４Ｈを４等分し、６時間ごとに切り替わっていく。
-     * 
+     *
      * @return ファイルパス。
      */
     public String getDestImagePath() {
@@ -79,10 +79,10 @@ public class BackGround {
 
     /**
      * 一日の内「どの部分に居るか」を数値にて返す。<br>
-     * 
+     *
      * 日をいくつのパートに分けるかは、引数 totalPart にて指定し、戻り値は0～totalPartとなる。
      * また、オフセットが指定でき、1を指定すると次の、-1を指定すると前のパートを返す。
-     * 
+     *
      * @param totalPartCount 総パート数(日を幾つのパートに分けるか)。
      * @param offset オフセット。
      * @return パート番号。
@@ -95,7 +95,7 @@ public class BackGround {
     /**
      * 背景画像ＡとＢのブレンド率を取得する。<br>
      * たとえば全部で４枚なら、２４Ｈを４等分し、６時間ごとに0～1.0を繰り返す。
-     * 
+     *
      * @return ブレンド率数値(百分率)
      */
     public double getBlendRatio() {
