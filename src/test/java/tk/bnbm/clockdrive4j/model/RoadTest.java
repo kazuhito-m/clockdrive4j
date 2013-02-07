@@ -29,87 +29,87 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Enclosed.class)
 public class RoadTest {
 
-	@RunWith(Theories.class)
-	public static class RoadクラスのgetRoadPositionメソッドのテスト {
+    @RunWith(Theories.class)
+    public static class RoadクラスのgetRoadPositionメソッドのテスト {
 
-		// 意味履き違えてTheories(総当たり)で作ってしまったが、良いサンプルなので残しておく。
-		// (本来であれば、Parameterized(パラメタライズ)テストとして作るべき。)
+        // 意味履き違えてTheories(総当たり)で作ってしまったが、良いサンプルなので残しておく。
+        // (本来であれば、Parameterized(パラメタライズ)テストとして作るべき。)
 
-		private Road sut;
+        private Road sut;
 
-		@Before
-		public void setUp() throws NumberFormatException, IOException {
-			sut = new Road("target/test-classes/datas/roadData.csv");
-		}
+        @Before
+        public void setUp() throws NumberFormatException, IOException {
+            sut = new Road("target/test-classes/datas/roadData.csv");
+        }
 
-		@Test
-		public void 時間を与えられ_道路上の座標を得られる() throws Exception {
-			sut.getRoadPosition(new Date());
-		}
+        @Test
+        public void 時間を与えられ_道路上の座標を得られる() throws Exception {
+            sut.getRoadPosition(new Date());
+        }
 
-		@DataPoints
-		public static Object[][] VALUES = { { 0, 0, 0, 0, 0, 30, "異なるはず" },
-				{ 0, 1, 0, 0, 2, 0, "異なるはず" }, { 1, 59, 0, 2, 0, 0, "異なるはず" },
-				{ 11, 59, 0, 12, 0, 0, "異なるはず" },
-				{ 0, 0, 0, 12, 0, 0, "同じはず" }, { 6, 0, 0, 18, 0, 0, "同じはず" } };
+        @DataPoints
+        public static Object[][] VALUES = { { 0, 0, 0, 0, 0, 30, "異なるはず" },
+                { 0, 1, 0, 0, 2, 0, "異なるはず" }, { 1, 59, 0, 2, 0, 0, "異なるはず" },
+                { 11, 59, 0, 12, 0, 0, "異なるはず" },
+                { 0, 0, 0, 12, 0, 0, "同じはず" }, { 6, 0, 0, 18, 0, 0, "同じはず" } };
 
-		@Theory
-		public void 与えた時間に応じて_道路上の座標が変化する(Object[] values) {
+        @Theory
+        public void 与えた時間に応じて_道路上の座標が変化する(Object[] values) {
 
-			int hourA = ((Integer) values[0]).intValue();
-			int minuteA = ((Integer) values[1]).intValue();
-			int secondA = ((Integer) values[2]).intValue();
-			int hourB = ((Integer) values[3]).intValue();
-			int minuteB = ((Integer) values[4]).intValue();
-			int secondB = ((Integer) values[5]).intValue();
-			String expectTo = (String) values[6];
+            int hourA = ((Integer) values[0]).intValue();
+            int minuteA = ((Integer) values[1]).intValue();
+            int secondA = ((Integer) values[2]).intValue();
+            int hourB = ((Integer) values[3]).intValue();
+            int minuteB = ((Integer) values[4]).intValue();
+            int secondB = ((Integer) values[5]).intValue();
+            String expectTo = (String) values[6];
 
-			Calendar c = Calendar.getInstance();
+            Calendar c = Calendar.getInstance();
 
-			c.set(2001, 1, 1, hourA, minuteA, secondA);
-			Point2D.Double from = sut.getRoadPosition(c.getTime());
+            c.set(2001, 1, 1, hourA, minuteA, secondA);
+            Point2D.Double from = sut.getRoadPosition(c.getTime());
 
-			c.set(2001, 1, 1, hourB, minuteB, secondB);
-			Point2D.Double to = sut.getRoadPosition(c.getTime());
+            c.set(2001, 1, 1, hourB, minuteB, secondB);
+            Point2D.Double to = sut.getRoadPosition(c.getTime());
 
-			if (expectTo.contains("異")) {
-				assertThat(from, is(not(to)));
-			} else {
-				assertThat(from, is(to));
-			}
-		}
-	}
+            if (expectTo.contains("異")) {
+                assertThat(from, is(not(to)));
+            } else {
+                assertThat(from, is(to));
+            }
+        }
+    }
 
-	@RunWith(Parameterized.class)
-	public static class RoadクラスのcalcPositionRatioメソッドパラメタライズドテスト {
+    @RunWith(Parameterized.class)
+    public static class RoadクラスのcalcPositionRatioメソッドパラメタライズドテスト {
 
-		private int hour;
-		private int minite;
-		private int second;
-		private double angle;
+        private int hour;
+        private int minite;
+        private int second;
+        private double angle;
 
-		public RoadクラスのcalcPositionRatioメソッドパラメタライズドテスト(int hour, int minite,
-				int second, double angle) {
-			this.hour = hour;
-			this.minite = minite;
-			this.second = second;
-			this.angle = angle;
-		}
+        public RoadクラスのcalcPositionRatioメソッドパラメタライズドテスト(int hour, int minite,
+                int second, double angle) {
+            this.hour = hour;
+            this.minite = minite;
+            this.second = second;
+            this.angle = angle;
+        }
 
-		@Parameters
-		public static Collection<Object[]> getParam() {
-			Object[][] params = { { 0, 0, 0, 0.0 }, { 6, 0, 0, 0.5 },
-					{ 12, 0, 0, 0 }, { 23, 0, 0, 1.0 - (1.0 / 12) } };
-			return Arrays.asList(params);
-		}
+        @Parameters
+        public static Collection<Object[]> getParam() {
+            Object[][] params = { { 0, 0, 0, 0.0 }, { 6, 0, 0, 0.5 },
+                    { 12, 0, 0, 0 }, { 23, 0, 0, 1.0 - (1.0 / 12) } };
+            return Arrays.asList(params);
+        }
 
-		@Test
-		public void 与えた時刻に応じて文字盤上の角度が得られる() {
-			Calendar c = Calendar.getInstance();
-			c.set(2000, 1, 1, hour, minite, second);
+        @Test
+        public void 与えた時刻に応じて文字盤上の角度が得られる() {
+            Calendar c = Calendar.getInstance();
+            c.set(2000, 1, 1, hour, minite, second);
 
-			assertThat(Road.calcPositionRatio(c.getTime()), is(angle));
-		}
-	}
+            assertThat(Road.calcPositionRatio(c.getTime()), is(angle));
+        }
+    }
 
 }

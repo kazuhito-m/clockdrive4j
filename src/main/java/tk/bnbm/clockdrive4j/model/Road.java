@@ -6,8 +6,9 @@ import static java.util.Calendar.SECOND;
 
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,13 +48,15 @@ public class Road {
     protected void loadCsvFromFile(String roadCsvFilePath)
             throws NumberFormatException, IOException {
 
-        FileReader fr = null;
+        FileInputStream fis = null;
+        InputStreamReader isr = null;
         BufferedReader br = null;
 
         try {
 
-            fr = new FileReader(roadCsvFilePath);
-            br = new BufferedReader(fr);
+            fis = new FileInputStream(roadCsvFilePath);
+            isr = new InputStreamReader(fis, "UTF-8");
+            br = new BufferedReader(isr);
 
             String line = null;
             while ((line = br.readLine()) != null) {
@@ -74,8 +77,11 @@ public class Road {
             if (br != null) {
                 br.close();
             }
-            if (fr != null) {
-                fr.close();
+            if (isr != null) {
+                isr.close();
+            }
+            if (fis != null) {
+                fis.close();
             }
         }
     }
