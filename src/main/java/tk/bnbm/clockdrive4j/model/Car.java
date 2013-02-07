@@ -7,6 +7,10 @@ import java.awt.geom.Point2D;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * 「車」を司るクラス。
+ * @author kazuhito_m
+ */
 public class Car {
 
     /** 与えられた時刻 */

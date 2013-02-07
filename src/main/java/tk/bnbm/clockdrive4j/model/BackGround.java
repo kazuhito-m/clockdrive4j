@@ -12,6 +12,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 「背景」を司るクラス。
+ * @author kazuhito_m
+ */
 public class BackGround {
 
     /** 与えられた時刻 */
