@@ -16,12 +16,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 /**
  * デバッグ用ダイアログのコントロールクラス。
- * 
+ *
  * @author kazuhito_m
  */
 public class DebugForm {
@@ -60,23 +61,24 @@ public class DebugForm {
 
     /**
      * 時刻値が変更されたら、親フォームの描画内容へ反映させる
-     * 
+     *
      * @param e
      */
     @FXML
     protected void doTextChanged(Event e) {
         Date validTime;
         try {
+            targetDate.setTooltip(null);
             validTime = FMT_DT.parse(targetDate.getText());
             sut.draw(validTime);
         } catch (ParseException pe) {
-            // 認識できないんだから、何もしなくて良いんじゃないか？
+            targetDate.setTooltip(new Tooltip("日付時刻として表示できる文字でね♪"));
         }
     }
 
     /**
      * 「24時間ぐるっと旅をする！！」クリックイベント。
-     * 
+     *
      * @param a イベントオブジェクト。
      */
     @FXML
@@ -87,7 +89,7 @@ public class DebugForm {
 
     /**
      * 「1時間ドライブする！！」クリックイベント。
-     * 
+     *
      * @param a イベントオブジェクト。
      */
     @FXML
@@ -98,7 +100,7 @@ public class DebugForm {
 
     /**
      * 「"道"の軌跡を記録する。」クリックイベント。
-     * 
+     *
      * @param a イベントオブジェクト。
      */
     @FXML
@@ -109,7 +111,7 @@ public class DebugForm {
 
     /**
      * 早回しでシミュレート開始する（２４時間 or １時間）
-     * 
+     *
      * @param hour 指定の時間。
      */
     protected void simulate(final int totalHours) {
@@ -150,7 +152,7 @@ public class DebugForm {
     /**
      * ボタンの有効・無効制御。<br>
      * 表示が「気持ち悪くなる」ので、最低限の「この最中は、これできない」を制御。
-     * 
+     *
      * @param target
      */
     private void buttonDisableControl(Button target) {
@@ -181,7 +183,7 @@ public class DebugForm {
     /**
      * デバッグ対象を外部から与える。<br>
      * アプリケーションからは、このオブジェクトが見えないため、クラス変数を利用しセットする。
-     * 
+     *
      * @param sut セットするデバッグ対象画面オブジェクト。
      */
     public static void setDebugTarget(MainView target) {
@@ -190,13 +192,13 @@ public class DebugForm {
 
     /**
      * DebugFormの外側(stage)の形状を決め、初期化する。
-     * 
+     *
      * @param s
      * @throws IOException
      */
     public static void initStage(Stage s) throws IOException {
         s.setTitle("DebugForm");
-        s.initStyle(StageStyle.UTILITY); // 作業用ダイアログ。
+        s.initStyle(StageStyle.DECORATED); // 作業用ダイアログ。
         Parent root = FXMLLoader.load(DebugForm.class
                 .getResource("debugForm.fxml"));
         Scene scene = new Scene(root);
