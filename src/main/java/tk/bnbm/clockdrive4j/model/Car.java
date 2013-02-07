@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Car {
+
     /** 与えられた時刻 */
     private Date time;
 
@@ -29,8 +30,8 @@ public class Car {
      *
      * @param t 基準時刻。
      */
-    public void setTime(Date t) {
-        this.time = t;
+    public void setTime(Date time) {
+        this.time = (Date) time.clone();
     }
 
     /**

@@ -1,7 +1,6 @@
 package tk.bnbm.clockdrive4j.view;
 
 import java.awt.geom.Point2D;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

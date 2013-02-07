@@ -100,7 +100,7 @@ public class BackGround {
      */
     public double getBlendRatio() {
 
-        double partHours = (double) (24 / imageFileNames.length); // 背景パーツ、一枚がカバーする時間。
+        double partHours = 24D / (double) imageFileNames.length; // 背景パーツ、一枚がカバーする時間。
         double hour = (double) time.get(HOUR_OF_DAY);
         double min = (double) time.get(MINUTE);
         double sec = (double) time.get(SECOND);

@@ -71,8 +71,12 @@ public class Road {
             }
 
         } finally {
-            br.close();
-            fr.close();
+            if (br != null) {
+                br.close();
+            }
+            if (fr != null) {
+                fr.close();
+            }
         }
     }
 
