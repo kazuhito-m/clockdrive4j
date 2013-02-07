@@ -125,7 +125,7 @@ public abstract class LayoutAndEventView extends Application {
         stage.setTitle("CleckDrive");
 
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            public void handle(WindowEvent e) {
+            public void handle(final WindowEvent e) {
                 onClose();
             }
         });
@@ -146,7 +146,7 @@ public abstract class LayoutAndEventView extends Application {
         final ContextMenu popup = new ContextMenu();
         MenuItem mi = new MenuItem("終了する(_X)");
         mi.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
+            public void handle(final ActionEvent e) {
                 Platform.exit();
             }
         });
@@ -154,7 +154,7 @@ public abstract class LayoutAndEventView extends Application {
 
         mi = new MenuItem("タイマー停止と再開(_T)");
         mi.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
+            public void handle(final ActionEvent e) {
                 switchTimer();
             }
         });
@@ -163,7 +163,7 @@ public abstract class LayoutAndEventView extends Application {
 
         mi = new MenuItem("開発用(_D)");
         mi.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent e) {
+            public void handle(final ActionEvent e) {
                 startDebug();
             }
         });
