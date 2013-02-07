@@ -13,20 +13,30 @@ import java.util.Date;
  */
 public class Car {
 
-    /** 与えられた時刻 */
+    // 定数群。
+
+    /** 計算用「2周分＋直角」角度。 */
+    private static final double TWO_LAPS_PLUS_ANGLE = 2.0D * 360.0D + 90.0D;
+
+    /** 計測範囲(秒) */
+    private static final int MEASURING_RANGE_SEC = 5;
+
+    // プロパティ群。
+
+    /** 与えられた時刻。 */
     private Date time;
 
-    /** 車の位置や角度を算出するためのRoadインスタンス */
+    /** 車の位置や角度を算出するためのRoadインスタンス。 */
     private Road road;
 
     /**
-     * コンストラクタ。<br>
-     * 引数にRoadインスタンスを受け取って、格納する。
+     * コンストラクタ。
+     * <br>引数にRoadインスタンスを受け取って、格納する。
      *
      * @param road 自身が走ることになる"道路"オブジェクト。
      */
-    public Car(Road road) {
-        this.road = road;
+    public Car(final Road r) {
+        this.road = r;
     }
 
     /**
@@ -34,7 +44,7 @@ public class Car {
      *
      * @param t 基準時刻。
      */
-    public void setTime(Date time) {
+    public void setTime(final Date time) {
         this.time = (Date) time.clone();
     }
 
@@ -48,8 +58,8 @@ public class Car {
     }
 
     /**
-     * 車をの向き(描くべき角度を360度法)を取得する。<br>
-     * 前後２点から滑らかに補完する。
+     * 車をの向き(描くべき角度を360度法)を取得する。
+     * <br>前後２点から滑らかに補完する。
      *
      * @return 角度(360度法)
      */
@@ -59,11 +69,11 @@ public class Car {
 
         // 自身が保持している「時刻」から前後５秒算出。
         c.setTime(this.time);
-        c.add(SECOND, -5);
+        c.add(SECOND, -MEASURING_RANGE_SEC);
         Date before5Sec = c.getTime();
 
         c.setTime(this.time);
-        c.add(SECOND, +5);
+        c.add(SECOND, +MEASURING_RANGE_SEC);
         Date after5Sec = c.getTime();
 
         // 座標算出。
@@ -72,6 +82,6 @@ public class Car {
         double xDiff = (pA.getX() - pB.getX());
         double yDiff = (pA.getY() - pB.getY());
         double angle = Math.atan2(yDiff, xDiff);
-        return angle / PI / 2.0D * 360.0D + 90.0D;
+        return angle / PI / TWO_LAPS_PLUS_ANGLE;
     }
 }
