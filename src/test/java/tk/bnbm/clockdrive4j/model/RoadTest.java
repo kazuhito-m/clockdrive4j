@@ -44,7 +44,7 @@ public class RoadTest {
 
         @Test
         public void 時間を与えられ_道路上の座標を得られる() throws Exception {
-            sut.getRoadPosition(new Date());
+            sut.getPosition(new Date());
         }
 
         @DataPoints
@@ -67,10 +67,10 @@ public class RoadTest {
             Calendar c = Calendar.getInstance();
 
             c.set(2001, 1, 1, hourA, minuteA, secondA);
-            Point2D.Double from = sut.getRoadPosition(c.getTime());
+            Point2D.Double from = sut.getPosition(c.getTime());
 
             c.set(2001, 1, 1, hourB, minuteB, secondB);
-            Point2D.Double to = sut.getRoadPosition(c.getTime());
+            Point2D.Double to = sut.getPosition(c.getTime());
 
             if (expectTo.contains("異")) {
                 assertThat(from, is(not(to)));
