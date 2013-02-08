@@ -5,6 +5,7 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.geom.Point2D;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -23,11 +24,17 @@ import org.junit.runners.Parameterized.Parameters;
 
 /**
  * Roadクラスのテスト。
- *
  * @author kazuhito_m
  */
 @RunWith(Enclosed.class)
 public class RoadTest {
+
+    public static class 異常系テスト {
+        @Test(expected = FileNotFoundException.class)
+        public void ファイルが存在しない場合正しい例外を返す() throws Exception {
+            new Road("target/test-classes/datas/notFound.csv");
+        }
+    }
 
     @RunWith(Theories.class)
     public static class RoadクラスのgetRoadPositionメソッドのテスト {
