@@ -237,5 +237,4 @@ public abstract class LayoutAndEventView extends Application {
         isTimerOn = true;
         timer.start();
     }
-
 }
