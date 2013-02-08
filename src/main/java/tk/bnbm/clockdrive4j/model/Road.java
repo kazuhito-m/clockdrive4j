@@ -38,7 +38,7 @@ public class Road {
     // プロパティ群。
 
     /** 道路上の位置の一覧。 */
-    private List<Point2D.Double> roadPositions;
+    protected List<Point2D.Double> roadPositions;
 
     /**
      * コンストラクタ。
@@ -109,9 +109,12 @@ public class Road {
         Calendar cal = Calendar.getInstance();
         cal.setTime(time);
 
-        double ratio = ((double) cal.get(HOUR_OF_DAY) % HOUR_OF_HERFDAY / HOUR_OF_HERFDAY)
-                + ((double) cal.get(MINUTE) / MIN_OF_HERFDAY)
-                + ((double) cal.get(SECOND) / SEC_OF_HERFDAY);
+        double hour = (double) cal.get(HOUR_OF_DAY);
+        double min = (double) cal.get(MINUTE);
+        double sec = (double) cal.get(SECOND);
+
+        double ratio = (hour % HOUR_OF_HERFDAY / HOUR_OF_HERFDAY)
+                + (min / MIN_OF_HERFDAY) + (sec / SEC_OF_HERFDAY);
         return ratio;
     }
 
@@ -121,19 +124,24 @@ public class Road {
      * @param time 指定時刻(時分秒を対象)。
      * @return 点オブジェクト。
      */
-    public Point2D.Double getRoadPosition(final Date time) {
-        // 比率計算。
-        double ratio = calcPositionRatio(time);
-
-        double baseIndex = ratio * roadPositions.size();
+    public Point2D.Double getPosition(final Date time) {
+        // 「指定時刻 / 一日」の比率計算。
+        double ratioOfDay = calcPositionRatio(time);
+        // 「道」データ中で「何番目相等か」を計算。
+        double baseIndex = ratioOfDay * roadPositions.size();
         int idxA = (int) baseIndex % roadPositions.size();
+        // 次番を計算。
         int idxB = (idxA + 1) % roadPositions.size();
-        double blend = baseIndex - (int) baseIndex;
+        // 切り捨てた「当点と次点のどの辺か」を比率で記録。
+        double distRatio = baseIndex - (int) baseIndex;
 
+        // 「道」データから座標取り出し
         Point2D.Double from = roadPositions.get(idxA);
         Point2D.Double to = roadPositions.get(idxB);
+        // 2点を補完した座標を計算
+        double x = from.getX() * (ALL - distRatio) + to.getX() * distRatio;
+        double y = from.getY() * (ALL - distRatio) + to.getY() * distRatio;
 
-        return new Point2D.Double(from.getX() * (ALL - blend) + to.getX()
-                * blend, from.getY() * (ALL - blend) + to.getY() * blend);
+        return new Point2D.Double(x, y);
     }
 }
