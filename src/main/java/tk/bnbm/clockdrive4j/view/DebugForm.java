@@ -100,8 +100,9 @@ public class DebugForm {
     @FXML
     protected void doRecordRoad(final ActionEvent a) {
         buttonDisableControl(recordRoad); // ボタンの有効無効制御。
-        // TODO 実装
-        System.out.println("doRecordRoad実行されたよ！");
+        // 「道の軌道」記録開始。
+        RoadDriveRecorder rdr = new RoadDriveRecorder();
+        rdr.record(sut);
     }
 
     /**
