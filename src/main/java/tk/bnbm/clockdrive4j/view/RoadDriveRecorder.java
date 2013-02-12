@@ -17,18 +17,17 @@ import tk.bnbm.clockdrive4j.model.Road;
 public class RoadDriveRecorder {
 
     private static final double INTERVAL_SECONDS = 5.0;
-    
+
     private Road recordRoad;
-    
+
     private Date recordStarted;
-    
-    private AnimationTimer timer;
-    
-    
+
+    private  AnimationTimer timer;
+
     public RoadDriveRecorder() {
         recordRoad = new Road();
     }
-    
+
     public void record(MainView sut) {
 
         StringBuilder sb = new StringBuilder();
@@ -47,26 +46,37 @@ public class RoadDriveRecorder {
         sb.append("秒ごとに、'1時'から'2時'の部分、'2時'から'3時'の部分、と移っていきます。");
         sb.append("\n■ '11時'から'12時'の部分を記録し終わったら、道の軌跡が出来上がります。");
 
-        int result = MessageBox.show(null, sb.toString(), "道の軌跡を、手動で記録する", OK + CANCEL);
-        if (result == CANCEL) return;
-        
-        //TODO ガイドラインとして、中心から１２等分する放射線を描く
+        if (confirmMessage(sb.toString()) == CANCEL)
+            return;
+
+        // TODO ガイドラインとして、中心から１２等分する放射線を描く
 
         timer = createTimer();
         recordStarted = new Date();
-//        recordRoad.clear();
-        
+        recordRoad.clearPosition();
+
     }
-    
-    private AnimationTimer createTimer() {
+
+    protected int confirmMessage(String msg) {
+        return MessageBox.show(null, msg, "道の軌跡を手動で記録する", OK + CANCEL);
+    }
+
+    protected AnimationTimer createTimer() {
         return new AnimationTimer() {
-            
+
             @Override
             public void handle(long now) {
                 // TODO 自動生成されたメソッド・スタブ
-                
+
             }
         };
     }
     
+    /**
+     * 現在が「記録の最中」なのかを真偽値で判定する。
+     * @return 記録中か否か。true:中。
+     */
+    public boolean isRecording() {
+        return timer != null;
+    }
 }
