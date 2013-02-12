@@ -30,7 +30,7 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Enclosed.class)
 public class RoadTest {
 
-    public static class 正常・異常系テスト {
+    public static class 正常系or異常系テスト {
         @Test(expected = FileNotFoundException.class)
         public void ファイルが存在しない場合正しい例外が発生する() throws Exception {
             new Road("target/test-classes/datas/notFound.csv");
