@@ -41,6 +41,13 @@ public class Road {
     protected List<Point2D.Double> roadPositions;
 
     /**
+     * デフォルトコンストラクタ。
+     */
+    public Road() {
+        roadPositions = new ArrayList<Point2D.Double>();
+    }
+
+    /**
      * コンストラクタ。
      * @param roadCsvFilePath 読み込むファイルのパス。
      * @throws IOException
@@ -48,7 +55,7 @@ public class Road {
      */
     public Road(final String roadCsvFilePath) throws NumberFormatException,
             IOException {
-        roadPositions = new ArrayList<Point2D.Double>();
+        this();
         loadCsvFromFile(roadCsvFilePath);
     }
 
@@ -144,4 +151,20 @@ public class Road {
 
         return new Point2D.Double(x, y);
     }
+
+    /**
+     * 「地点」データをすべて破棄する。
+     */
+    public void clearPosition() {
+        roadPositions.clear();
+    }
+
+    /**
+     * 「地点」データを追加する。
+     * @param point 地点の座標データ一つ。
+     */
+    public void addPosition(Point2D.Double point) {
+        roadPositions.add(point);
+    }
+
 }

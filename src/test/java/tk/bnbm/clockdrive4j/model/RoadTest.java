@@ -2,6 +2,7 @@ package tk.bnbm.clockdrive4j.model;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.awt.geom.Point2D;
@@ -29,10 +30,28 @@ import org.junit.runners.Parameterized.Parameters;
 @RunWith(Enclosed.class)
 public class RoadTest {
 
-    public static class 異常系テスト {
+    public static class 正常・異常系テスト {
         @Test(expected = FileNotFoundException.class)
-        public void ファイルが存在しない場合正しい例外を返す() throws Exception {
+        public void ファイルが存在しない場合正しい例外が発生する() throws Exception {
             new Road("target/test-classes/datas/notFound.csv");
+        }
+
+        @Test(expected = ArithmeticException.class)
+        public void 地点データが存在しなければ例外が発生する() throws Exception {
+            Road sut = new Road("target/test-classes/datas/roadData.csv");
+            sut.clearPosition();
+
+            sut.getPosition(new Date());
+        }
+
+        @Test
+        public void 地点データが一つもない状態から追加出来る() {
+            Road sut = new Road();
+            Point2D.Double point = new Point2D.Double(1D, 2D);
+
+            sut.addPosition(point);
+
+            assertThat(sut.getPosition(new Date()), is(not(nullValue())));
         }
     }
 
